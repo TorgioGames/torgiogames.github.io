@@ -4,74 +4,264 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Torgio Games</title>
-<meta name="description" content="Torgio Games is an independent mobile game studio. Games: Lanterns of Vela (Son Fenerci) and Popwit.">
+<meta name="description" content="Torgio Games is an independent mobile game studio from Türkiye. Calm, colourful, handcrafted games and apps: Lanterns of Vela, Smashtale, Blockwish, Paintlings, Popwit and Abonova.">
+<meta property="og:title" content="Torgio Games">
+<meta property="og:description" content="Small, handcrafted mobile games with heart. Made in Türkiye.">
+<meta property="og:image" content="https://torgiogames.github.io/assets/lanterns-of-vela.jpg">
+<meta name="theme-color" content="#0A1324">
 <link rel="icon" href="assets/lanterns-of-vela-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@500;700;800&display=swap">
 <style>
-  :root { --night: #0A1324; --deep: #0E182E; --ink: #F3E9D4; --dim: #A9B3C9; --gold: #E9B565; --rule: rgba(233,181,101,.25);
-          --display: "Fraunces", Georgia, serif; --body: "Nunito", system-ui, sans-serif; color-scheme: dark; }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--night); color: var(--ink); font: 500 17px/1.6 var(--body);
-         padding: 48px max(20px, env(safe-area-inset-right)) 64px max(20px, env(safe-area-inset-left)); }
-  main { max-width: 880px; margin: 0 auto; display: grid; gap: 56px; }
-  header { display: grid; justify-items: center; gap: 8px; text-align: center; }
-  header img { width: 260px; max-width: 70%; }
-  header p { color: var(--dim); margin: 0; max-width: 34em; }
-  h1, h2 { font-family: var(--display); font-weight: 600; margin: 0; line-height: 1.15; text-wrap: balance; }
-  .game { background: var(--deep); border: 2px solid var(--rule); border-radius: 24px; overflow: hidden; }
-  .game img { display: block; width: 100%; height: auto; }
-  .game-body { padding: 28px; display: grid; gap: 14px; }
-  .game-body h2 { font-size: 30px; }
-  .tr { color: var(--dim); font-weight: 700; }
-  .soon { justify-self: start; display: inline-block; font: 800 12px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--night); background: var(--gold); border-radius: 99px; padding: 7px 12px; }
-  .links { display: flex; flex-wrap: wrap; gap: 10px 18px; }
-  a { color: var(--gold); font-weight: 800; text-decoration: none; }
-  a:hover, a:focus-visible { text-decoration: underline; }
-  footer { color: var(--dim); text-align: center; font-size: 14px; }
+  :root { --night:#0A1324; --deep:#0E182E; --card:#121D36; --ink:#F3E9D4; --dim:#A9B3C9; --gold:#E9B565;
+          --rule:rgba(233,181,101,.22); --soft:rgba(243,233,212,.08);
+          --display:"Fraunces", Georgia, serif; --body:"Nunito", system-ui, sans-serif; color-scheme:dark; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--night); color:var(--ink); font:500 17px/1.6 var(--body); overflow-x:hidden; }
+  a { color:var(--gold); font-weight:800; text-decoration:none; }
+  a:hover, a:focus-visible { text-decoration:underline; }
+  h1, h2, h3 { font-family:var(--display); font-weight:600; margin:0; line-height:1.12; text-wrap:balance; }
+  p { margin:0; }
+  .wrap { max-width:1120px; margin:0 auto; padding:0 max(16px, env(safe-area-inset-left)); }
+
+  /* top bar */
+  .bar { position:sticky; top:0; z-index:5; background:rgba(10,19,36,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--soft); }
+  .bar .wrap { display:flex; align-items:center; gap:20px; height:60px; }
+  .bar .brand { font:700 19px/1 var(--display); color:var(--ink); letter-spacing:.06em; margin-right:auto; }
+  .bar nav { display:flex; gap:20px; }
+  .bar nav a { color:var(--dim); font-weight:700; font-size:15px; }
+  .lang { display:flex; border:1px solid var(--rule); border-radius:99px; overflow:hidden; }
+  .lang button { all:unset; cursor:pointer; font:800 12px/1 var(--body); letter-spacing:.08em; padding:7px 11px; color:var(--dim); }
+  .lang button[aria-pressed="true"] { background:var(--gold); color:var(--night); }
+
+  /* hero */
+  .hero { position:relative; text-align:center; padding:88px 0 72px; }
+  .hero::before { content:""; position:absolute; inset:0; z-index:-1;
+    background:radial-gradient(60% 55% at 50% 30%, rgba(233,181,101,.16), transparent 70%),
+               radial-gradient(40% 40% at 15% 90%, rgba(120,140,255,.10), transparent 70%),
+               radial-gradient(40% 40% at 85% 85%, rgba(255,120,150,.08), transparent 70%); }
+  .hero img { width:220px; max-width:60%; }
+  .hero h1 { font-size:clamp(34px, 6vw, 58px); margin:22px auto 16px; max-width:15em; }
+  .hero p { color:var(--dim); max-width:36em; margin:0 auto; font-size:18px; }
+  .stats { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin-top:34px; }
+  .stats span { background:var(--soft); border:1px solid var(--rule); border-radius:99px; padding:8px 16px; font-weight:800; font-size:14px; }
+  .stats b { color:var(--gold); }
+
+  section { padding:56px 0; }
+  .head { display:grid; gap:8px; margin-bottom:28px; }
+  .eyebrow { font:800 12px/1 var(--body); letter-spacing:.18em; text-transform:uppercase; color:var(--gold); }
+  .head h2 { font-size:clamp(28px, 4vw, 40px); }
+  .head p { color:var(--dim); max-width:40em; }
+
+  /* game cards */
+  .games { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:24px; }
+  .game { background:var(--card); border:1px solid var(--rule); border-radius:24px; overflow:hidden; display:flex; flex-direction:column;
+          transition:transform .25s ease, border-color .25s ease; }
+  .game:hover { transform:translateY(-4px); border-color:rgba(233,181,101,.5); }
+  .game.wide { grid-column:1 / -1; }
+  .art { position:relative; aspect-ratio:1024/500; overflow:hidden; background:var(--deep); }
+  .art img { width:100%; height:100%; object-fit:cover; display:block; }
+  .badge { position:absolute; top:14px; left:14px; font:800 11px/1 var(--body); letter-spacing:.12em; text-transform:uppercase;
+           color:var(--night); background:var(--gold); border-radius:99px; padding:7px 11px; }
+  .badge.dev { background:#8FD6C2; }
+  .body { padding:22px 24px 24px; display:grid; gap:12px; flex:1; align-content:start; }
+  .title { display:flex; align-items:center; gap:14px; }
+  .title img { width:56px; height:56px; border-radius:14px; flex:none; box-shadow:0 4px 14px rgba(0,0,0,.35); }
+  .title h3 { font-size:25px; }
+  .title small { display:block; color:var(--dim); font:700 14px/1.3 var(--body); margin-top:3px; }
+  .body > p { color:#D9D2C2; }
+  .tags { display:flex; flex-wrap:wrap; gap:8px; }
+  .tags span { font-size:13px; font-weight:700; color:var(--dim); border:1px solid var(--soft); background:rgba(255,255,255,.03); border-radius:99px; padding:3px 10px; }
+  .links { display:flex; flex-wrap:wrap; gap:6px 18px; font-size:15px; margin-top:4px; }
+
+  /* apps */
+  .apps { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:20px; }
+  .app { background:var(--card); border:1px solid var(--rule); border-radius:22px; padding:22px; display:grid; gap:12px; align-content:start; }
+  .app .title img, .mono { width:56px; height:56px; border-radius:14px; flex:none; }
+  .mono { display:grid; place-items:center; font:700 26px/1 var(--display); color:#fff; }
+  .mono.gulp { background:linear-gradient(135deg,#5EC8F2,#2E7BD6); }
+  .mono.coz { background:linear-gradient(135deg,#F7A9C0,#B07BE0); }
+  .app .badge { position:static; justify-self:start; }
+
+  /* values */
+  .values { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:16px; }
+  .value { border-top:2px solid var(--gold); padding-top:14px; display:grid; gap:6px; }
+  .value h3 { font-size:20px; }
+  .value p { color:var(--dim); font-size:15px; }
+
+  .contact { text-align:center; background:var(--deep); border:1px solid var(--rule); border-radius:28px; padding:44px 24px; display:grid; gap:12px; justify-items:center; }
+  .contact h2 { font-size:clamp(26px, 4vw, 36px); }
+  .contact p { color:var(--dim); max-width:32em; }
+  .btn { display:inline-block; margin-top:6px; background:var(--gold); color:var(--night); border-radius:99px; padding:13px 26px; font-weight:800; }
+  footer { color:var(--dim); text-align:center; font-size:14px; padding:36px 0 52px; }
+
+  @media (max-width:860px) {
+    .games, .apps { grid-template-columns:1fr; }
+    .values { grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .bar nav { display:none; }
+  }
+  @media (max-width:480px) { .values { grid-template-columns:1fr; } .hero { padding:60px 0 48px; } }
+  @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .game { transition:none; } .game:hover { transform:none; } }
 </style>
 </head>
 <body>
+<div class="bar"><div class="wrap">
+  <span class="brand">TORGIO</span>
+  <nav>
+    <a href="#games" data-tr="Oyunlar">Games</a>
+    <a href="#apps" data-tr="Uygulamalar">Apps</a>
+    <a href="#about" data-tr="Hakkımızda">About</a>
+    <a href="#contact" data-tr="İletişim">Contact</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button type="button" data-lang="tr" aria-pressed="false">TR</button>
+  </div>
+</div></div>
+
+<header class="hero"><div class="wrap">
+  <img src="assets/torgio-logo.png" alt="Torgio Games">
+  <h1 data-tr="Kalbi olan küçük, el yapımı oyunlar.">Small, handcrafted games with heart.</h1>
+  <p data-tr="Torgio Games, Türkiye'den bağımsız bir mobil oyun stüdyosu. Sakin, renkli, hikâyeli oyunlar ve günlük hayatı kolaylaştıran sade uygulamalar yapıyoruz.">Torgio Games is an independent mobile studio from Türkiye. We make calm, colourful, story-driven games and simple apps that make everyday life a little easier.</p>
+  <div class="stats">
+    <span data-tr-html="<b>5</b> oyun"><b>5</b> games</span>
+    <span data-tr-html="<b>3</b> uygulama"><b>3</b> apps</span>
+    <span data-tr-html="<b>9</b> dil"><b>9</b> languages</span>
+    <span data-tr-html="<b>Android</b> ve <b>iOS</b>"><b>Android</b> &amp; <b>iOS</b></span>
+  </div>
+</div></header>
+
 <main>
-  <header>
-    <img src="assets/torgio-logo.png" alt="Torgio Games">
-    <p>An independent mobile game studio from Türkiye. Small, handcrafted games with heart.<br>
-    <span class="tr">Türkiye'den bağımsız bir mobil oyun stüdyosu.</span></p>
-  </header>
+<section id="games"><div class="wrap">
+  <div class="head">
+    <span class="eyebrow" data-tr="Oyunlar">Games</span>
+    <h2 data-tr="Oyunlarımız">Our games</h2>
+    <p data-tr="Sakin, adil ve tekrar tekrar oynanmak için yapıldı. Her dünya, her karakter ve her bölüm elle tasarlanır.">Calm, fair and made to be replayed. Every world, character and level is designed by hand.</p>
+  </div>
+  <div class="games">
 
-  <article class="game">
-    <img src="assets/lanterns-of-vela.jpg" width="1024" height="500" alt="Lanterns of Vela key art: the harbour town of Vela at night with its lighthouse">
-    <div class="game-body">
-      <span class="soon">Coming soon · Yakında</span>
-      <h2>Lanterns of Vela <span class="tr">· Son Fenerci</span></h2>
-      <p>A calm, story-rich colour puzzle. Carry glowing light to the lanterns, relight a dark harbour town street by street, and uncover what really happened on the night the lighthouse went dark. 240 levels, 24 hand-painted memories, weekly tasks, no lives, no timers, no forced ads, plays offline.</p>
-      <p class="tr">Hikâyeli, sakin bir renk eşleştirme bulmacası. 240 bölüm, 24 elle çizilmiş anı, haftalık görevler; can yok, bekleme yok, zorla reklam yok, internetsiz oynanır.</p>
-      <div class="links">
-        <a href="lanterns-of-vela/support.html">Support · Destek</a>
-        <a href="lanterns-of-vela/privacy.html">Privacy policy · Gizlilik</a>
+    <article class="game wide">
+      <div class="art"><img src="assets/lanterns-of-vela.jpg" width="1024" height="500" alt="Lanterns of Vela key art: the harbour town of Vela at night with its lighthouse"><span class="badge" data-tr="Yakında">Coming soon</span></div>
+      <div class="body">
+        <div class="title"><img src="assets/lanterns-of-vela-icon.png" alt=""><div><h3 data-tr="Son Fenerci">Lanterns of Vela</h3><small data-tr="Hikâyeli renk bulmacası">Story colour puzzle</small></div></div>
+        <p data-tr="Parlayan ışığı fenerlere taşı, karanlık liman kasabasını sokak sokak yeniden aydınlat ve deniz fenerinin söndüğü gece gerçekte ne olduğunu keşfet.">Carry glowing light to the lanterns, relight a dark harbour town street by street, and uncover what really happened on the night the lighthouse went dark.</p>
+        <div class="tags"><span data-tr="240 bölüm">240 levels</span><span data-tr="24 elle çizilmiş anı">24 hand-painted memories</span><span data-tr="Haftalık görevler">Weekly tasks</span><span data-tr="İnternetsiz">Offline</span></div>
+        <div class="links"><a href="lanterns-of-vela/support.html" data-tr="Destek">Support</a><a href="lanterns-of-vela/privacy.html" data-tr="Gizlilik">Privacy policy</a></div>
       </div>
-    </div>
-  </article>
+    </article>
 
-  <article class="game">
-    <img src="assets/popwit.jpg" width="1024" height="500" alt="Popwit key art: the Popwit logo with colorful candy mini games on two phones">
-    <div class="game-body">
-      <span class="soon">Coming soon · Yakında</span>
-      <h2>Popwit <span class="tr">· Zeka Oyunları</span></h2>
-      <p>Colorful, toy-like mini games for a daily mind workout. Three quick games a day for memory, focus, speed, logic and math; every rule is clear in seconds and each game adapts to how you play. Your first week is fully open, the daily set is always free, no ads.</p>
-      <p class="tr">Renkli, oyuncak gibi mini oyunlarla günlük zihin egzersizi. Günde 3 kısa oyun: hafıza, dikkat, hız, mantık ve matematik. İlk hafta her şey açık, günlük set her zaman ücretsiz, reklam yok.</p>
-      <div class="links">
-        <a href="popwit/support.html">Support · Destek</a>
-        <a href="popwit/privacy.html">Privacy policy · Gizlilik</a>
-        <a href="popwit/terms.html">Terms of use · Kullanım koşulları</a>
+    <article class="game">
+      <div class="art"><img src="assets/smashtale.jpg" width="1024" height="500" alt="Smashtale key art: five colourful worlds behind the Smashtale logo"><span class="badge" data-tr="Yakında">Coming soon</span></div>
+      <div class="body">
+        <div class="title"><img src="assets/smashtale-icon.png" alt=""><div><h3>Smashtale</h3><small data-tr="Renk Yolculuğu">Colour physics adventure</small></div></div>
+        <p data-tr="Topu nişan al, renkli kuleleri kır, değen renkleri zincirleme patlat. Şenlik kasabasından bir çocuğun rüyasına uzanan beş dünyada Kül Kont'un sırrını çöz.">Aim the cannon and smash colourful towers. Touching colours chain, every tower is a little physics puzzle, across five story worlds from a festival town to a child's dream.</p>
+        <div class="tags"><span data-tr="500 bölüm">500 levels</span><span data-tr="5 dünya">5 worlds</span><span data-tr="İnternetsiz">Offline</span></div>
+        <div class="links"><a href="smashtale/support.html" data-tr="Destek">Support</a><a href="smashtale/privacy.html" data-tr="Gizlilik">Privacy policy</a></div>
       </div>
-    </div>
-  </article>
+    </article>
 
-  <footer>
-    <p>Contact · İletişim: <a href="mailto:torgiogames@gmail.com">torgiogames@gmail.com</a></p>
-    <p>© 2026 Torgio Games</p>
-  </footer>
+    <article class="game">
+      <div class="art"><img src="assets/blockwish.jpg" width="640" height="600" alt="Blockwish: a colourful block model island with little houses" style="object-position:50% 40%"><span class="badge" data-tr="Yakında">Coming soon</span></div>
+      <div class="body">
+        <div class="title"><img src="assets/blockwish-icon.png" alt=""><div><h3>Blockwish</h3><small data-tr="Blok Bulmaca">Block puzzle</small></div></div>
+        <p data-tr="Satırı doldur, bloklar uçsun ve bölümün maketini küp küp kursun. Maket bitince Kutu'nun ışığıyla gerçeğe dönüşür: ev, pasta, roket… Nil ile birlikte Kutu'yu yıldızlara geri götür.">Fill a row, watch the blocks fly off and build the level's model cube by cube. When it's done, the Box's light turns it real: a house, a cake, a rocket… Help Nil send the Box back to the stars.</p>
+        <div class="tags"><span data-tr="5 dünya × 20 bölüm">5 worlds × 20 levels</span><span data-tr="Sonsuz mod">Endless mode</span><span data-tr="Hikâye sahneleri">Story scenes</span></div>
+      </div>
+    </article>
+
+    <article class="game">
+      <div class="art"><img src="assets/paintlings.jpg" width="675" height="1200" alt="Paintlings: a painted postcard of Istanbul's Maiden's Tower" style="object-position:50% 42%"><span class="badge dev" data-tr="Geliştiriliyor">In development</span></div>
+      <div class="body">
+        <div class="title"><img src="assets/paintlings-icon.png" alt=""><div><h3 data-tr="Boyacıklar">Paintlings</h3><small data-tr="Saklı nesne oyunu">Hidden-object game</small></div></div>
+        <p data-tr="1975'ten kalma, rengi solmuş bir kartpostal albümünde saklanan küçük boya damlalarını bul. Bulduğun her damla resmi yeniden boyar. Türkiye'nin şehirlerini simgeleriyle dolaş.">Find the little paint drops hiding in a faded 1975 postcard album, and every one you find paints the picture back to life. Travel Türkiye city by city, one landmark at a time.</p>
+        <div class="tags"><span data-tr="Süre yok">No timer</span><span data-tr="Ceza yok">No penalties</span><span data-tr="Şehir şehir Türkiye">Cities of Türkiye</span></div>
+      </div>
+    </article>
+
+    <article class="game">
+      <div class="art"><img src="assets/popwit.jpg" width="1024" height="500" alt="Popwit key art: colorful candy mini games on two phones"><span class="badge" data-tr="Yakında">Coming soon</span></div>
+      <div class="body">
+        <div class="title"><img src="assets/popwit-icon.png" alt=""><div><h3>Popwit</h3><small data-tr="Zeka Oyunları">Brain games</small></div></div>
+        <p data-tr="Oyuncak gibi renkli mini oyunlarla günlük zihin egzersizi. Günde 3 kısa oyun: hafıza, dikkat, hız, mantık ve matematik. Sen iyi oynadıkça zorlaşır.">A daily mind workout made of colourful, toy-like mini games. Three quick games a day for memory, focus, speed, logic and math, adapting as you get better.</p>
+        <div class="tags"><span data-tr="8 mini oyun">8 mini games</span><span data-tr="Günlük set ücretsiz">Daily set free</span><span data-tr="Reklam yok">No ads</span></div>
+        <div class="links"><a href="popwit/support.html" data-tr="Destek">Support</a><a href="popwit/privacy.html" data-tr="Gizlilik">Privacy policy</a><a href="popwit/terms.html" data-tr="Kullanım koşulları">Terms of use</a></div>
+      </div>
+    </article>
+
+  </div>
+</div></section>
+
+<section id="apps"><div class="wrap">
+  <div class="head">
+    <span class="eyebrow" data-tr="Uygulamalar">Apps</span>
+    <h2 data-tr="Hayatı kolaylaştıran uygulamalar">Apps for everyday life</h2>
+    <p data-tr="Oyunlarımızdaki özeni günlük alışkanlıklara taşıyoruz: sade, sevimli ve verin telefonunda kalır.">We bring the care of our games to everyday habits: simple, friendly, and your data stays on your phone.</p>
+  </div>
+  <div class="apps">
+    <article class="app">
+      <span class="badge" data-tr="Yakında">Coming soon</span>
+      <div class="title"><img src="assets/abonova-icon.png" alt=""><div><h3>Abonova</h3><small data-tr="Abonelik Takibi">Subscription tracker</small></div></div>
+      <p data-tr="Bütün aboneliklerin tek yerde: aylık ve yıllık toplam, her ödemeden önce hatırlatma, adım adım iptal. Hesap yok, banka girişi yok.">All your subscriptions in one place: monthly and yearly totals, a reminder before every payment, step-by-step cancelling. No account, no bank login.</p>
+    </article>
+    <article class="app">
+      <span class="badge dev" data-tr="Geliştiriliyor">In development</span>
+      <div class="title"><span class="mono gulp" aria-hidden="true">G</span><div><h3>Gulplet</h3><small data-tr="Su Takibi">Water tracker</small></div></div>
+      <p data-tr="Su içtikçe sevimli karakterin mutlu olur, büyür ve sana tepki verir. Günlük su hedefini eğlenceli bir alışkanlığa çevirir.">Drink water and your little character gets happier, grows and reacts to you. Turns your daily water goal into a fun habit.</p>
+    </article>
+    <article class="app">
+      <span class="badge dev" data-tr="Geliştiriliyor">In development</span>
+      <div class="title"><span class="mono coz" aria-hidden="true">C</span><div><h3>Cozlet</h3><small data-tr="Öz Bakım Dostu">Self-care pet</small></div></div>
+      <p data-tr="Küçük öz bakım hedeflerini tamamla, duygunu kaydet; karakterin büyüsün, evi güzelleşsin, hikâyesi ilerlesin.">Complete small self-care goals and log your mood; your companion grows, their home gets cosier and their story unfolds.</p>
+    </article>
+  </div>
+</div></section>
+
+<section id="about"><div class="wrap">
+  <div class="head">
+    <span class="eyebrow" data-tr="Hakkımızda">About</span>
+    <h2 data-tr="Nasıl oyun yapıyoruz">How we make games</h2>
+  </div>
+  <div class="values">
+    <div class="value"><h3 data-tr="Oyuncuya saygı">Respect for players</h3><p data-tr="Net kurallar, adil zorluk; oyuncuyu sıkıştırmak için kurulmuş tuzaklar yok.">Clear rules, fair difficulty, and no tricks built to pressure you.</p></div>
+    <div class="value"><h3 data-tr="El yapımı">Handcrafted</h3><p data-tr="Dünyalar, karakterler, müzik ve sesler stüdyoda, sıfırdan üretilir.">Worlds, characters, music and sound are made in-house from scratch.</p></div>
+    <div class="value"><h3 data-tr="Herkes için">For everyone</h3><p data-tr="Her oyun 9 dilde çıkar ve telefonun diliyle açılır.">Every game ships in 9 languages and opens in your phone's language.</p></div>
+    <div class="value"><h3 data-tr="Gizlilik önce">Privacy first</h3><p data-tr="Oyunlarımız internetsiz oynanır; analiz yalnızca senin onayınla çalışır.">Our games play offline, and analytics only run with your consent.</p></div>
+  </div>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <div class="contact">
+    <span class="eyebrow" data-tr="İletişim">Contact</span>
+    <h2 data-tr="Merhaba de">Say hello</h2>
+    <p data-tr="Soru, öneri, basın ya da iş birliği için bize yaz. Her mesajı okuyoruz.">Questions, feedback, press or partnerships, write to us. We read every message.</p>
+    <a class="btn" href="mailto:torgiogames@gmail.com">torgiogames@gmail.com</a>
+  </div>
+</div></section>
 </main>
+
+<footer><div class="wrap">
+  <p data-tr="© 2026 Torgio Games · Türkiye'de sevgiyle yapıldı">© 2026 Torgio Games · Made with love in Türkiye</p>
+</div></footer>
+
+<script>
+(function () {
+  var nodes = document.querySelectorAll('[data-tr],[data-tr-html]');
+  nodes.forEach(function (n) { n.dataset.en = n.innerHTML; });
+  function setLang(l) {
+    document.documentElement.lang = l;
+    nodes.forEach(function (n) {
+      if (l === 'tr') n.innerHTML = n.dataset.trHtml || n.dataset.tr.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      else n.innerHTML = n.dataset.en;
+    });
+    document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lang === l); });
+    try { localStorage.setItem('lang', l); } catch (e) {}
+  }
+  document.querySelectorAll('.lang button').forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang); }); });
+  var saved = null; try { saved = localStorage.getItem('lang'); } catch (e) {}
+  var l = saved || ((navigator.language || '').toLowerCase().indexOf('tr') === 0 ? 'tr' : 'en');
+  if (l === 'tr') setLang('tr');
+})();
+</script>
 </body>
 </html>
