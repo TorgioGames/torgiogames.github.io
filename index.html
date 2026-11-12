@@ -61,6 +61,7 @@
   .game:hover { transform:translateY(-4px); border-color:rgba(233,181,101,.5); }
   .game.wide { grid-column:1 / -1; }
   .art { position:relative; aspect-ratio:1024/500; overflow:hidden; background:var(--deep); }
+  .art > a { display:block; height:100%; }
   .art img { width:100%; height:100%; object-fit:cover; display:block; }
   .badge { position:absolute; top:14px; left:14px; font:800 11px/1 var(--body); letter-spacing:.12em; text-transform:uppercase;
            color:var(--night); background:var(--gold); border-radius:99px; padding:7px 11px; }
@@ -181,12 +182,12 @@
     </article>
 
     <article class="game">
-      <div class="art"><img src="assets/splashcard.jpg" width="675" height="1200" alt="Splashcard: a painted postcard of Uçhisar Castle in Cappadocia" style="object-position:50% 45%"><span class="badge dev" data-tr="Geliştiriliyor">In development</span></div>
+      <div class="art"><a href="splashcard/" aria-label="Splashcard"><img src="assets/splashcard.jpg" width="675" height="1200" alt="Splashcard: a painted postcard of Uçhisar Castle in Cappadocia" style="object-position:50% 45%"></a><span class="badge dev" data-tr="Geliştiriliyor">In development</span></div>
       <div class="body">
         <div class="title"><img src="assets/splashcard-icon.png" alt=""><div><h3>Splashcard</h3><small data-tr="Gizli nesne boyama oyunu">Hidden-object coloring game</small></div></div>
         <p data-tr="1975'ten kalma, rengi solmuş bir kartpostal albümünde saklanan küçük boya damlalarını bul. Bulduğun her damla resmi yeniden boyar. Türkiye'nin şehirlerini simgeleriyle dolaş.">Find the little paint drops hiding in a faded 1975 postcard album, and every one you find paints the picture back to life. Travel Türkiye city by city, one landmark at a time.</p>
-        <div class="tags"><span data-tr="Süre yok">No timer</span><span data-tr="Reklam yok">No ads</span><span data-tr="Şehir şehir Türkiye">Cities of Türkiye</span></div>
-        <div class="links"><a href="splashcard/support.html" data-tr="Destek">Support</a><a href="splashcard/privacy.html" data-tr="Gizlilik">Privacy policy</a></div>
+        <div class="tags"><span data-tr="Süre yok">No timer</span><span data-tr="Satın alma yok">No purchases</span><span data-tr="Şehir şehir Türkiye">Cities of Türkiye</span></div>
+        <div class="links"><a href="splashcard/" data-tr="Oyun sayfası">Game page</a><a href="splashcard/support.html" data-tr="Destek">Support</a><a href="splashcard/privacy.html" data-tr="Gizlilik">Privacy policy</a></div>
       </div>
     </article>
 
@@ -236,7 +237,7 @@
   <div class="values">
     <div class="value"><h3 data-tr="Oyuncuya saygı">Respect for players</h3><p data-tr="Net kurallar, adil zorluk; oyuncuyu sıkıştırmak için kurulmuş tuzaklar yok.">Clear rules, fair difficulty, and no tricks built to pressure you.</p></div>
     <div class="value"><h3 data-tr="El yapımı">Handcrafted</h3><p data-tr="Dünyalar, karakterler, müzik ve sesler stüdyoda, sıfırdan üretilir.">Worlds, characters, music and sound are made in-house from scratch.</p></div>
-    <div class="value"><h3 data-tr="Herkes için">For everyone</h3><p data-tr="Her oyun 9 dilde çıkar ve telefonun diliyle açılır.">Every game ships in 9 languages and opens in your phone's language.</p></div>
+    <div class="value"><h3 data-tr="Herkes için">For everyone</h3><p data-tr="Her oyun en az 6 dilde çıkar ve telefonun diliyle açılır.">Every game ships in at least 6 languages and opens in your phone's language.</p></div>
     <div class="value"><h3 data-tr="Gizlilik önce">Privacy first</h3><p data-tr="Oyunlarımız internetsiz oynanır; analiz yalnızca senin onayınla çalışır.">Our games play offline, and analytics only run with your consent.</p></div>
   </div>
 </div></section>

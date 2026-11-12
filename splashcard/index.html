@@ -1,0 +1,1037 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Splashcard · Torgio Games</title>
+<meta name="description" content="Splashcard is a hidden-object coloring game: find the paint drops hiding in a faded 1975 postcard album and travel Türkiye city by city. In development at Torgio Games.">
+<meta property="og:title" content="Splashcard">
+<meta property="og:description" content="Find the paint drops hiding in a faded 1975 postcard album, and every one you find paints the picture back to life.">
+<meta property="og:image" content="https://torgiogames.github.io/assets/splashcard.jpg">
+<meta name="theme-color" content="#0A1324">
+<link rel="icon" href="../assets/splashcard-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@500;700;800&family=Courier+Prime:wght@400;700&display=swap">
+<style>
+  :root { --night:#0A1324; --card:#121D36; --ink:#F3E9D4; --dim:#A9B3C9; --gold:#E9B565; --rule:rgba(233,181,101,.22); --soft:rgba(243,233,212,.08);
+          --display:"Fraunces", Georgia, serif; --body:"Nunito", system-ui, sans-serif; --mono:"Courier Prime", "Courier New", monospace; color-scheme:dark; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--night); color:var(--ink); font:500 17px/1.6 var(--body); overflow-x:hidden; }
+  a { color:var(--gold); font-weight:800; text-decoration:none; }
+  a:hover, a:focus-visible { text-decoration:underline; }
+  h1, h2, h3 { font-family:var(--display); font-weight:600; margin:0; line-height:1.12; text-wrap:balance; }
+  p { margin:0; }
+  .wrap { max-width:1120px; margin:0 auto; padding:0 max(16px, env(safe-area-inset-left)); }
+
+  .bar { position:sticky; top:0; z-index:5; background:rgba(10,19,36,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--soft); }
+  .bar .wrap { display:flex; align-items:center; gap:20px; height:60px; }
+  .bar .brand { font:700 19px/1 var(--display); color:var(--ink); letter-spacing:.06em; margin-right:auto; }
+  .lang { display:flex; border:1px solid var(--rule); border-radius:99px; overflow:hidden; }
+  .lang button { all:unset; cursor:pointer; font:800 12px/1 var(--body); letter-spacing:.08em; padding:7px 11px; color:var(--dim); }
+  .lang button[aria-pressed="true"] { background:var(--gold); color:var(--night); }
+
+  .intro { display:flex; align-items:center; gap:18px; padding:48px 0 24px; }
+  .intro img { width:76px; height:76px; border-radius:22%; flex:none; box-shadow:0 8px 24px rgba(0,0,0,.35); }
+  .intro h1 { font-size:clamp(34px, 6vw, 54px); }
+  .intro small { display:block; color:var(--dim); font-size:16px; font-weight:700; margin-top:4px; }
+  .badge { display:inline-block; font:800 11px/1 var(--body); letter-spacing:.1em; text-transform:uppercase; color:var(--night); background:var(--gold); border-radius:99px; padding:6px 10px; margin-top:10px; }
+
+  /* the live scene: Karaköy, September 1974 */
+  .card { position:relative; aspect-ratio:2 / 1; border-radius:16px; overflow:hidden; background:#fdfcf8; color:#1c1c1c;
+          box-shadow:0 1px 2px rgba(0,0,0,.4), 0 18px 48px rgba(0,0,0,.5); touch-action:pan-y; user-select:none; -webkit-user-select:none; }
+  .card svg { display:block; width:100%; height:100%; }
+  .card .pp { fill:var(--paper); }
+  .card .tag { position:absolute; top:12px; left:16px; display:flex; gap:14px; align-items:baseline; font:400 12px/1.3 var(--mono); letter-spacing:.1em; pointer-events:none; }
+  .card .tag b { font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:.04em; }
+  .card .hint { position:absolute; left:0; right:0; bottom:10px; padding:0 16px; text-align:center; font:400 12px/1.3 var(--mono); opacity:.72; pointer-events:none; }
+  @media (max-width:640px) { .card { aspect-ratio:4 / 3; } .card .hint { font-size:11px; } }
+  .story { max-width:62ch; margin:22px auto 0; text-align:center; color:var(--dim); font-size:18px; }
+  .story em { font-family:var(--display); font-style:normal; color:var(--ink); }
+
+  .about { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:18px; padding:56px 0 24px; }
+  .about div { background:var(--card); border:1px solid var(--soft); border-radius:14px; padding:20px; }
+  .about h3 { font-size:20px; margin-bottom:6px; }
+  .about p { color:var(--dim); font-size:16px; }
+  .facts { display:flex; flex-wrap:wrap; gap:10px 28px; padding:12px 0 8px; color:var(--dim); font-size:15px; }
+  .facts b { color:var(--ink); }
+  .links { display:flex; flex-wrap:wrap; gap:22px; padding:16px 0 56px; }
+  footer { border-top:1px solid var(--soft); padding:22px 0 40px; color:var(--dim); font-size:14px; }
+  footer p + p { margin-top:6px; }
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="../">TORGIO GAMES</a>
+  <div class="lang" role="group" aria-label="Language"><button data-lang="en" aria-pressed="true">EN</button><button data-lang="tr" aria-pressed="false">TR</button></div>
+</div></header>
+
+<main class="wrap">
+  <div class="intro">
+    <img src="../assets/splashcard-icon.png" alt="">
+    <div>
+      <h1>Splashcard</h1>
+      <small data-tr="Gizli nesne boyama oyunu">Hidden-object coloring game</small>
+      <span class="badge" data-tr="Geliştiriliyor">In development</span>
+    </div>
+  </div>
+
+  <div class="card" id="card">
+    <div class="tag"><span data-tr="KARAKÖY · EYLÜL 1974">KARAKÖY · SEPTEMBER 1974</span><b id="clock">16:00</b></div>
+    <p class="hint" data-tr="Resim çizen kıza, martılara, kediye ya da vapura dokun · gökyüzünü yana sürükle">Tap the girl sketching, the gulls, the cat or the ferry · drag the sky</p>
+  </div>
+  <p class="story" data-tr-html="<em>Her şey bir vapurda başladı.</em> Karaköy, Eylül 1974: bir rüzgâr, havada bir eskiz. Yarım asır sonra bir torun, hiç postalanmamış kartpostallarla dolu bir albüm bulur.">
+    <em>It all began on a ferry.</em> Karaköy, September 1974: a gust of wind, a sketch in the air. Half a century later, a granddaughter finds an album full of postcards that were never posted.</p>
+
+  <section class="about">
+    <div><h3 data-tr="Damlaları bul">Find the drops</h3><p data-tr="Rengi solmuş her kartpostalda küçük boya damlaları saklı. Bulduğun her damla resmi yeniden boyar.">Little paint drops hide in every faded postcard. Every one you find paints the picture back to life.</p></div>
+    <div><h3 data-tr="Şehir şehir Türkiye">Türkiye, city by city</h3><p data-tr="İstanbul'dan Mardin'e, her şehir kendi simgesiyle elle boyanmış bir kartpostal.">From Istanbul to Mardin, every city is a hand-painted postcard of its landmark.</p></div>
+    <div><h3 data-tr="Acele yok">No rush</h3><p data-tr="Süre yok. Takılırsan ipucu var; kartların arkasındaki notlar hikâyeyi parça parça anlatır.">No timer. Hints are there when you are stuck, and the notes on the back of the cards tell the story piece by piece.</p></div>
+  </section>
+
+  <div class="facts">
+    <span><b data-tr="Tür">Genre</b> · <span data-tr="Gündelik · Gizli nesne">Casual · Hidden object</span></span>
+    <span><b data-tr="Fiyat">Price</b> · <span data-tr="Ücretsiz, isteğe bağlı reklamlı. Uygulama içi satın alma yok.">Free with optional ads. No in-app purchases.</span></span>
+    <span><b data-tr="Durum">Status</b> · <span data-tr="Yakında Google Play ve App Store'da">Coming soon to Google Play and the App Store</span></span>
+  </div>
+  <div class="links"><a href="support.html" data-tr="Destek">Support</a><a href="privacy.html" data-tr="Gizlilik">Privacy policy</a><a href="../" data-tr="Bütün oyunlarımız">All our games</a></div>
+</main>
+
+<footer><div class="wrap">
+  <p data-tr="© 2026 Torgio Games · Türkiye'de sevgiyle yapıldı">© 2026 Torgio Games · Made with love in Türkiye</p>
+  <p data-tr-html="Karaköy sahnesi <a href=&quot;https://github.com/JDhruv14/line-art-animation&quot;>line-art-animation</a> ile canlı çiziliyor (MIT lisansı, Copyright (c) 2026 JDhruv14).">The Karaköy scene is drawn live with <a href="https://github.com/JDhruv14/line-art-animation">line-art-animation</a> (MIT License, Copyright (c) 2026 JDhruv14).</p>
+</div></footer>
+
+<script>
+(function () {
+  var nodes = document.querySelectorAll('[data-tr],[data-tr-html]');
+  nodes.forEach(function (n) { n.dataset.en = n.innerHTML; });
+  function setLang(l) {
+    document.documentElement.lang = l;
+    nodes.forEach(function (n) { n.innerHTML = l !== 'tr' ? n.dataset.en : n.dataset.trHtml || n.dataset.tr.replace(/&/g, '&amp;').replace(/</g, '&lt;'); });
+    document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lang === l); });
+    try { localStorage.setItem('lang', l); } catch (e) {}
+  }
+  document.querySelectorAll('.lang button').forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang); }); });
+  var saved = null; try { saved = localStorage.getItem('lang'); } catch (e) {}
+  setLang(saved || ((navigator.language || '').toLowerCase().indexOf('tr') === 0 ? 'tr' : 'en'));
+})();
+</script>
+<script>
+// ===== line-art-animation lib (github.com/JDhruv14/line-art-animation) — MIT License, Copyright (c) 2026 JDhruv14 — ink.ts, gait.ts, motion.ts, daynight.ts =====
+const NS = 'http://www.w3.org/2000/svg', INK = 'currentColor', PAPER = '#fdfdfc', INK_DAY = '#1c1c1c', PEN = 1.35;
+function el(tag, attrs = {}, parent) {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, String(attrs[k]));
+  if (attrs.fill === PAPER) n.classList.add('pp');
+  if (parent) parent.appendChild(n);
+  return n;
+}
+const f = (n) => n.toFixed(2);
+const pt = (p) => `${f(p[0])} ${f(p[1])}`;
+const pen = (p, w = PEN) => el('path', { fill: 'none', stroke: INK, 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, p);
+const shape = (p, w = PEN) => el('path', { fill: PAPER, stroke: INK, 'stroke-width': w, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, p);
+const blot = (p) => el('path', { fill: INK }, p);
+const paint = (p, c, w = PEN) => el('path', { fill: c, stroke: INK, 'stroke-width': w, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, p);
+function limb(parent, width, w = PEN) {
+  const g = el('g', {}, parent);
+  const fill = el('path', { fill: PAPER }, g);
+  const a = pen(g, w), b = pen(g, w);
+  const half = (width - w) / 2;
+  return {
+    g,
+    draw(joints, endGap = [0.4, 0.9]) {
+      const s = joints[0], e = joints[joints.length - 1];
+      let c = [(s[0] + e[0]) / 2, (s[1] + e[1]) / 2];
+      if (joints.length === 3) { const m = joints[1]; c = [m[0] + 0.55 * (m[0] - c[0]), m[1] + 0.55 * (m[1] - c[1])]; }
+      const P = [];
+      for (let i = 0; i <= 16; i++) { const t = i / 16, u = 1 - t; P.push([u * u * s[0] + 2 * u * t * c[0] + t * t * e[0], u * u * s[1] + 2 * u * t * c[1] + t * t * e[1]]); }
+      const side = (sgn) => P.map((p, i) => {
+        const q = P[Math.min(P.length - 1, i + 1)], o = P[Math.max(0, i - 1)];
+        const dx = q[0] - o[0], dy = q[1] - o[1], l = Math.hypot(dx, dy) || 1;
+        return [p[0] - (dy / l) * half * sgn, p[1] + (dx / l) * half * sgn];
+      });
+      const L = side(1), R = side(-1);
+      fill.setAttribute('d', 'M' + L.map(pt).join('L') + 'L' + R.slice().reverse().map(pt).join('L') + 'Z');
+      const cut = (arr, gap) => arr.slice(0, arr.length - Math.round(gap * 2));
+      a.setAttribute('d', 'M' + cut(L, endGap[0]).map(pt).join('L'));
+      b.setAttribute('d', 'M' + cut(R, endGap[1]).map(pt).join('L'));
+    },
+  };
+}
+function solid(l, colour = INK) { const n = l.g.querySelector('path'); if (n) { n.classList.remove('pp'); n.setAttribute('fill', colour); } return l; }
+function joint(a, b, l1, l2, bend = 1) {
+  const dx = b[0] - a[0], dy = b[1] - a[1];
+  const d = Math.min(Math.hypot(dx, dy), l1 + l2 - 0.01);
+  const th = Math.atan2(dy, dx);
+  const al = Math.acos(Math.max(-1, Math.min(1, (l1 * l1 + d * d - l2 * l2) / (2 * l1 * d))));
+  const c1 = [a[0] + l1 * Math.cos(th - al), a[1] + l1 * Math.sin(th - al)];
+  const c2 = [a[0] + l1 * Math.cos(th + al), a[1] + l1 * Math.sin(th + al)];
+  return (c1[0] - c2[0]) * bend > 0 ? c1 : c2;
+}
+function shoe(node, ankle, toe = 0) {
+  const r = (toe * Math.PI) / 180, c = Math.cos(r), s = Math.sin(r);
+  const S = (x, y) => [ankle[0] + x * c - y * s, ankle[1] + x * s + y * c];
+  node.setAttribute('d', `M${pt(S(-1.6, -0.6))} L${pt(S(4.6, -0.2))} Q${pt(S(6.6, 0.4))} ${pt(S(5.6, 1.6))} L${pt(S(-1.4, 1.5))} Q${pt(S(-2.2, 0.5))} ${pt(S(-1.6, -0.6))}Z`);
+}
+const place = (g, x, y, dir = 1, s = 0.5) => g.setAttribute('transform', `translate(${f(x)} ${f(y)}) scale(${f(dir * s)} ${f(s)}) translate(-40 -120)`);
+const toScene = (x, y, dir, lx, ly, s = 0.5) => [x + dir * s * (lx - 40), y + s * (ly - 120)];
+function inkDefs(svg, id = 'ink') {
+  if (!svg.style.color) svg.style.color = INK_DAY;
+  const defs = el('defs', {}, svg);
+  const flt = el('filter', { id: `${id}-edge`, x: '-2%', y: '-2%', width: '104%', height: '104%' }, defs);
+  el('feTurbulence', { type: 'fractalNoise', baseFrequency: '0.6', numOctaves: 1, seed: 7, result: 'n' }, flt);
+  el('feDisplacementMap', { in: 'SourceGraphic', in2: 'n', scale: 0.45, xChannelSelector: 'R', yChannelSelector: 'G', result: 'd' }, flt);
+  el('feGaussianBlur', { in: 'd', stdDeviation: 0.12 }, flt);
+  return { defs, filter: `url(#${id}-edge)` };
+}
+function run(draw) {
+  const q = new URLSearchParams(location.search);
+  if (q.has('debug')) {
+    let t = 0; draw(t, 1 / 60);
+    window.__step = (s = 1) => { for (let i = 0, n = Math.round(s * 60); i < n; i++) draw((t += 1 / 60), 1 / 60); return t; };
+    return () => {};
+  }
+  const frozen = q.has('t') ? Number(q.get('t')) : null;
+  const still = frozen !== null || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const t0 = performance.now();
+  let id = 0, prev = 0;
+  const tick = (now) => {
+    const t = frozen ?? (now - t0) / 1000;
+    draw(t, Math.min(0.05, t - prev)); prev = t;
+    if (!still) id = requestAnimationFrame(tick);
+  };
+  id = requestAnimationFrame(tick);
+  return () => cancelAnimationFrame(id);
+}
+// gait.ts
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = (e0, e1, x) => { const t = clamp((x - e0) / (e1 - e0), 0, 1); return t * t * (3 - 2 * t); };
+const ease = (t) => smooth(0, 1, t);
+const minJerk = (s) => s * s * s * (10 - 15 * s + 6 * s * s);
+function kneeIK(hip, ankle, l1, l2) {
+  const dx = ankle[0] - hip[0], dy = ankle[1] - hip[1];
+  const d = Math.min(Math.hypot(dx, dy), l1 + l2 - 0.01);
+  const th = Math.atan2(dy, dx);
+  const al = Math.acos(clamp((l1 * l1 + d * d - l2 * l2) / (2 * l1 * d), -1, 1));
+  const c1 = [hip[0] + l1 * Math.cos(th - al), hip[1] + l1 * Math.sin(th - al)];
+  const c2 = [hip[0] + l1 * Math.cos(th + al), hip[1] + l1 * Math.sin(th + al)];
+  return c1[0] > c2[0] ? c1 : c2;
+}
+const GAIT_PRESETS = {
+  walk: { period: 1.0, duty: 0.62, stride: 24, lift: 3.4, heelOff: 15, heelKick: 0, thigh: 23, shin: 23, ankleY: 118.4, ground: 120, toe: 4.2 },
+  shuffle: { period: 0.9, duty: 0.64, stride: 18, lift: 2.4, heelOff: 12, heelKick: 0, thigh: 23, shin: 23, ankleY: 116, ground: 120, toe: 4.2 },
+  run: { period: 0.5, duty: 0.36, stride: 16, lift: 12, heelOff: 10, heelKick: 3.5, thigh: 13, shin: 13, ankleY: 118, ground: 120, toe: 3 },
+};
+function gait(opts = {}) {
+  const kind = opts.kind ?? 'walk';
+  const o = { ...GAIT_PRESETS[kind], ...opts, kind };
+  const { period, duty, stride: S, lift, heelOff, heelKick, thigh, shin, ankleY, ground, toe } = o;
+  const reach = (thigh + shin) * 0.983;
+  const restHip = ankleY - reach;
+  const speed = S / (duty * period);
+  const foot = (u) => {
+    u = ((u % 1) + 1) % 1;
+    if (u < duty) {
+      const x = 40 + S / 2 - (S * u) / duty;
+      const peel = smooth(duty - 0.14, duty, u);
+      const th = (heelOff * peel * Math.PI) / 180;
+      const px = x + toe, py = ground, ox = -toe, oy = ankleY - ground;
+      return { ankle: [px + ox * Math.cos(th) - oy * Math.sin(th), py + ox * Math.sin(th) + oy * Math.cos(th)], pitch: heelOff * peel, stance: true };
+    }
+    const s = (u - duty) / (1 - duty);
+    const x = 40 - S / 2 + S * minJerk(s) - heelKick * Math.sin(Math.PI * Math.min(1, s * 1.6));
+    const y = ankleY - lift * Math.pow(Math.sin(Math.PI * Math.pow(s, heelKick ? 0.7 : 1)), 1.2);
+    return { ankle: [x, y], pitch: heelOff * Math.pow(1 - smooth(0, 0.55, s), 1.4), stance: false };
+  };
+  return {
+    ...o, speed,
+    pose(phase, go = 1) {
+      const raw = [foot(phase), foot(phase + 0.5)];
+      if (go < 1) raw.forEach((fo, i) => {
+        const rest = 40 + (i ? -2 : 2);
+        fo.ankle = [rest + (fo.ankle[0] - rest) * go, ankleY + (fo.ankle[1] - ankleY) * go];
+        fo.pitch *= go; fo.stance = true;
+      });
+      let hipY = restHip;
+      const half = (((phase % 0.5) + 0.5) % 0.5);
+      if (heelKick && go >= 1) {
+        hipY = half < duty ? restHip + 1.4 * Math.sin((Math.PI * half) / duty) : restHip - 2.6 * Math.sin((Math.PI * (half - duty)) / (0.5 - duty));
+      } else {
+        for (const fo of raw) if (fo.stance) { const dx = fo.ankle[0] - 40; hipY = Math.max(hipY, fo.ankle[1] - Math.sqrt(Math.max(1, reach * reach - dx * dx))); }
+      }
+      const hip = [40, hipY];
+      const feet = raw.map((fo) => ({ ...fo, knee: kneeIK(hip, fo.ankle, thigh, shin) }));
+      const front = feet[0].ankle[0] >= feet[1].ankle[0] ? 0 : 1;
+      return { hip, feet, front, bob: hipY - restHip };
+    },
+  };
+}
+// motion.ts
+function seeded(seed = 11) { let s = seed; return (a = 0, b = 1) => { s = (s * 16807) % 2147483647; return a + ((s - 1) / 2147483646) * (b - a); }; }
+const wobble = (t, k = 1) => Math.sin(t * 1.3 * k) * 0.6 + Math.sin(t * 2.7 * k + 1.7) * 0.3 + Math.sin(t * 5.1 * k + 4.1) * 0.1;
+function spring(stiffness = 40, damping = 6, x = 0) {
+  return { x, v: 0, step(target, dt) { this.v += (stiffness * (target - this.x) - damping * this.v) * dt; this.x += this.v * dt; return this.x; }, kick(v) { this.v += v; } };
+}
+function pendulum(stiffness = 10, damping = 1.1, a = 0) {
+  return { a, v: 0, step(force, dt) { this.v += (-this.a * stiffness + force - this.v * damping) * dt; this.a += this.v * dt; return this.a; }, kick(v) { this.v += v; } };
+}
+function pointerWind(target, base = 0.3) {
+  let aim = base, lastX = null, lastT = 0;
+  const w = { value: base, step(t) { aim = lerp(aim, base + 0.25 * Math.sin(t * 0.21) + 0.15 * Math.sin(t * 0.67), 0.012); w.value = lerp(w.value, aim, 0.05); return w.value; } };
+  target.addEventListener('pointermove', (e) => {
+    const now = performance.now();
+    if (lastX !== null) aim = clamp(aim + ((e.clientX - lastX) / Math.max(8, now - lastT)) * 0.8, -2.4, 2.4);
+    lastX = e.clientX; lastT = now;
+  });
+  return w;
+}
+// daynight.ts
+const toRGB = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const rgb = (c) => `rgb(${c.map((v) => Math.round(v)).join(',')})`;
+const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+const lum = (c) => (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) / 255;
+function ramp(keys, u) {
+  u = ((u % 1) + 1) % 1;
+  const n = keys.length; let i = n - 1;
+  for (let j = 0; j < n; j++) if (keys[j][0] <= u) i = j;
+  const [p0, c0] = keys[i], [p1, c1] = keys[(i + 1) % n];
+  const span = (i + 1 < n ? p1 : p1 + 1) - p0;
+  let x = u - p0; if (x < 0) x += 1;
+  return mix(toRGB(c0), toRGB(c1), smooth(0, 1, x / span));
+}
+const SKY_TOP = [[0, '#0d1222'], [0.19, '#131a30'], [0.235, '#3d4066'], [0.27, '#cfd8e2'], [0.33, '#f3f2ee'], [0.5, '#f6f5f1'], [0.68, '#f3eee4'], [0.735, '#e3c6a6'], [0.762, '#5a5279'], [0.8, '#1b2140'], [0.86, '#0d1222']];
+const SKY_BOTTOM = [[0, '#1a2240'], [0.19, '#283050'], [0.235, '#d49884'], [0.27, '#f3d0b3'], [0.33, '#faf6ee'], [0.5, '#fcfbf7'], [0.68, '#f9efdc'], [0.735, '#f0a379'], [0.762, '#d47f68'], [0.8, '#383a60'], [0.86, '#1a2240']];
+const PAPERS = [[0, '#1a2036'], [0.19, '#1f263e'], [0.235, '#4a4561'], [0.27, '#ede4d8'], [0.33, '#fbf8f1'], [0.5, '#fdfcf8'], [0.68, '#faf4e8'], [0.735, '#f0dbc4'], [0.756, '#5d5571'], [0.8, '#262c48'], [0.86, '#1a2036']];
+const INK_DARK = toRGB('#1c1c1c'), INK_LIGHT = toRGB('#efe6cf');
+function palette(tau) {
+  const top = ramp(SKY_TOP, tau), bottom = ramp(SKY_BOTTOM, tau), paper = ramp(PAPERS, tau);
+  const L = lum(paper);
+  const inkT = smooth(0.56, 0.36, L);
+  return {
+    top, bottom, paper, inkT, ink: mix(INK_DARK, INK_LIGHT, inkT),
+    lamp: smooth(0.78, 0.4, L), night: smooth(0.42, 0.1, lum(top)),
+    sunset: Math.max(smooth(0.67, 0.735, tau) * smooth(0.79, 0.745, tau), smooth(0.215, 0.245, tau) * smooth(0.3, 0.26, tau)),
+  };
+}
+function applyPalette(svg, P) { svg.style.color = rgb(P.ink); svg.style.setProperty('--paper', rgb(P.paper)); }
+const nightTint = (colour, P, amount = 0.55) => rgb(mix(toRGB(colour), mix(toRGB(colour), [12, 16, 30], 0.6), P.inkT * amount));
+
+// ===== Scene: Karaköy, September 1974 =====
+const W = 960, H = 480, SC = 0.5, SP = 0.8, BASE = 334, WL = 420;
+const R = seeded(19), RR = Math.random;
+const lerpP = (a, b, t) => [lerp(a[0], b[0], t), lerp(a[1], b[1], t)];
+const card = document.getElementById('card');
+const clockEl = document.getElementById('clock');
+const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'xMinYMid slice', role: 'img', 'aria-label': 'Ink drawing of a ferry deck at Karaköy in 1974: a girl sketching on a bench, a ferry worker walking the deck, another ferry coming in, gulls and the Galata Tower' });
+card.prepend(svg);
+const { defs, filter } = inkDefs(svg, 'k');
+const skyGrad = el('linearGradient', { id: 'sky', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+const skyTop = el('stop', { offset: '0' }, skyGrad), skyBot = el('stop', { offset: '1' }, skyGrad);
+const glowGrad = el('radialGradient', { id: 'glow' }, defs);
+el('stop', { offset: '0', 'stop-color': '#ffc977', 'stop-opacity': 0.85 }, glowGrad);
+el('stop', { offset: '1', 'stop-color': '#ffc977', 'stop-opacity': 0 }, glowGrad);
+const moonGrad = el('radialGradient', { id: 'mglow' }, defs);
+el('stop', { offset: '0', 'stop-color': '#dfe6ff', 'stop-opacity': 0.5 }, moonGrad);
+el('stop', { offset: '1', 'stop-color': '#dfe6ff', 'stop-opacity': 0 }, moonGrad);
+
+const layer = (attrs = {}) => el('g', attrs, svg);
+const skyL = layer(), cloudL = layer({ filter }), farL = layer({ filter, opacity: 0.55 }), bldL = layer({ filter }), streetL = layer({ filter });
+const walkL = layer({ filter }), frontL = layer({ filter }), waterBackL = layer(), ferryL = layer({ filter }), waterFrontL = layer();
+const airL = layer({ filter }), glowL = layer({ style: 'mix-blend-mode:screen', 'pointer-events': 'none' }), hitL = layer();
+
+// colours that darken at night
+let tinted = [];
+const tint = (n, c) => { tinted.push([n, c]); return n; };
+const tintL = (l, c) => { solid(l, c); tint(l.g.querySelector('path'), c); return l; };
+const RED = '#b3412d', NAVY = '#2e3b58', OCHRE = '#c98a3a', MUSTARD = '#d6a43e', SIMIT = '#c4863f', GULLWING = '#a3abb4';
+
+// lights: window panes and lamps that come on one by one
+const lights = [];
+const WARM = toRGB('#ffd48a');
+function light(pane, glow, th, off = -1) { const L = { pane, glow, th, off, v: 0 }; lights.push(L); return L; }
+function windowAt(parent, x, y, w, h, o = {}) {
+  const d = o.arch ? `M${x} ${y + h} L${x} ${y + w / 2} Q${x} ${y} ${x + w / 2} ${y} Q${x + w} ${y} ${x + w} ${y + w / 2} L${x + w} ${y + h}Z` : `M${x} ${y}h${w}v${h}h${-w}Z`;
+  const pane = el('path', { d, fill: '#fdfcf8' }, parent);
+  el('path', { d, fill: 'none', stroke: INK, 'stroke-width': o.pen ?? SP }, parent);
+  if (o.bars !== false) pen(parent, (o.pen ?? SP) * 0.6).setAttribute('d', `M${x + w / 2} ${y + (o.arch ? w / 2 : 0)} V${y + h} M${x} ${y + h * 0.48} H${x + w}`);
+  if (o.shutters) for (const sx of [x - w * 0.44, x + w + 0.04 * w]) {
+    shape(parent, SP).setAttribute('d', `M${sx} ${y}h${w * 0.4}v${h}h${-w * 0.4}Z`);
+    pen(parent, SP * 0.45).setAttribute('d', Array.from({ length: Math.floor(h / 3) }, (_, i) => `M${sx + 0.6} ${y + 2 + i * 3} h${w * 0.4 - 1.2}`).join(' '));
+  }
+  if (o.sill !== false) pen(parent, SP).setAttribute('d', `M${x - 1.5} ${y + h + 0.8} H${x + w + 1.5}`);
+  const glow = el('circle', { cx: x + w / 2, cy: y + h / 2, r: Math.max(w, h) * 1.2 * (o.glow ?? 1), fill: 'url(#glow)', opacity: 0 }, o.glowParent ?? glowL);
+  return light(pane, glow, o.th ?? R(0.3, 0.92), o.off ?? (R() < 0.45 ? R(0.02, 0.2) : -1));
+}
+
+// ---------- sky ----------
+const skyRect = el('rect', { x: 0, y: 0, width: W, height: 360, fill: 'url(#sky)' }, skyL);
+const stars = Array.from({ length: 46 }, () => ({ n: el('circle', { cx: f(R(10, 950)), cy: f(R(8, 200)), r: f(R(0.5, 1.2)), fill: '#f4ecd6', opacity: 0 }, skyL), k: R(1, 3), ph: R(0, 6) }));
+const sunG = el('g', {}, skyL);
+const sunHalo = el('circle', { r: 46, fill: 'url(#glow)', opacity: 0 }, sunG);
+const sun = el('circle', { r: 15, fill: '#fff6e0', stroke: INK, 'stroke-width': SP }, sunG);
+const moonG = el('g', {}, skyL);
+el('circle', { r: 40, fill: 'url(#mglow)' }, moonG);
+el('path', { d: 'M0 -10 A10 10 0 1 0 0 10 A7.6 7.6 0 1 1 0 -10Z', fill: '#f2ead2' }, moonG);
+const clouds = [[120, 70, 1.1], [520, 46, 0.8], [800, 96, 1.3]].map(([x, y, s]) => {
+  const n = shape(cloudL, SP);
+  n.setAttribute('d', `M0 0 Q2 -9 12 -8 Q17 -17 28 -12 Q37 -18 45 -9 Q55 -9 54 0 Z`);
+  const tail = pen(cloudL, SP * 0.7);
+  tail.setAttribute('d', 'M-14 3 H10 M30 5 H62');
+  return { n, tail, x, y, s };
+});
+
+// ---------- far hill: Galata Tower, houses, a mosque ----------
+const hillY = (x) => 238 - 34 * Math.exp(-(((x - 300) / 190) ** 2)) - 6 * Math.sin(x / 70) - 10 * Math.exp(-(((x - 650) / 90) ** 2));
+{
+  let d = `M0 ${f(hillY(0))}`;
+  for (let x = 12; x <= W; x += 12) d += ` L${x} ${f(hillY(x))}`;
+  shape(farL, SP).setAttribute('d', d + ` L${W} 360 L0 360Z`);
+  // houses on the hill
+  for (let x = 14; x < W - 10; x += R(20, 30)) {
+    if (Math.abs(x - 300) < 30 || Math.abs(x - 650) < 50) continue;
+    const w = R(13, 20), h = R(9, 16), y = hillY(x + w / 2) + R(2, 10);
+    shape(farL, SP).setAttribute('d', `M${f(x)} ${f(y + 14)} V${f(y - h)} H${f(x + w)} V${f(y + 14)}`);
+    shape(farL, SP).setAttribute('d', `M${f(x - 2)} ${f(y - h)} L${f(x + w / 2)} ${f(y - h - 6)} L${f(x + w + 2)} ${f(y - h)}Z`);
+    windowAt(farL, x + w * 0.35, y - h + 4, 3.2, 4, { bars: false, sill: false, pen: SP * 0.7, glow: 1.6, th: R(0.35, 0.95) });
+  }
+  // Galata Tower
+  const tx = 300, tb = hillY(300) + 6;
+  shape(farL, SP).setAttribute('d', `M${tx - 18} ${tb} L${tx - 15} ${tb - 104} L${tx + 15} ${tb - 104} L${tx + 18} ${tb}Z`);
+  pen(farL, SP * 0.5).setAttribute('d', [-60, -40, -20].map((dy) => `M${tx - 16} ${tb + dy} H${tx + 16}`).join(' '));
+  for (const [dy, n] of [[-88, 3], [-66, 2], [-46, 2], [-24, 1]]) for (let i = 0; i < n; i++) {
+    const wx = tx - (n - 1) * 5 + i * 10;
+    pen(farL, SP).setAttribute('d', `M${wx - 1.4} ${tb + dy + 6} V${tb + dy} Q${wx} ${tb + dy - 2.2} ${wx + 1.4} ${tb + dy} V${tb + dy + 6}`);
+  }
+  shape(farL, SP).setAttribute('d', `M${tx - 21} ${tb - 104} H${tx + 21} V${tb - 111} H${tx - 21}Z`);
+  pen(farL, SP * 0.6).setAttribute('d', Array.from({ length: 8 }, (_, i) => `M${tx - 18 + i * 5.2} ${tb - 104} v-7`).join(' '));
+  shape(farL, SP).setAttribute('d', `M${tx - 14} ${tb - 111} L${tx - 14} ${tb - 124} L${tx + 14} ${tb - 124} L${tx + 14} ${tb - 111}`);
+  pen(farL, SP * 0.6).setAttribute('d', Array.from({ length: 6 }, (_, i) => `M${tx - 11 + i * 4.4} ${tb - 113} v-8`).join(' '));
+  shape(farL, SP).setAttribute('d', `M${tx - 17} ${tb - 123} Q${tx - 6} ${tb - 150} ${tx} ${tb - 172} Q${tx + 6} ${tb - 150} ${tx + 17} ${tb - 123}Z`);
+  pen(farL, SP).setAttribute('d', `M${tx} ${tb - 172} V${tb - 182}`);
+  // mosque
+  const mx = 650, mb = hillY(650) + 8;
+  shape(farL, SP).setAttribute('d', `M${mx - 40} ${mb + 10} V${mb - 10} H${mx + 40} V${mb + 10}`);
+  shape(farL, SP).setAttribute('d', `M${mx - 26} ${mb - 10} Q${mx} ${mb - 46} ${mx + 26} ${mb - 10}Z`);
+  shape(farL, SP).setAttribute('d', `M${mx - 40} ${mb - 10} Q${mx - 32} ${mb - 24} ${mx - 24} ${mb - 10}Z M${mx + 24} ${mb - 10} Q${mx + 32} ${mb - 24} ${mx + 40} ${mb - 10}Z`);
+  pen(farL, SP).setAttribute('d', `M${mx} ${mb - 38} V${mb - 46}`);
+  shape(farL, SP).setAttribute('d', `M${mx + 52} ${mb + 10} V${mb - 82} H${mx + 57} V${mb + 10}`);
+  pen(farL, SP).setAttribute('d', `M${mx + 49} ${mb - 56} H${mx + 60} M${mx + 50} ${mb - 72} H${mx + 59}`);
+  shape(farL, SP).setAttribute('d', `M${mx + 52} ${mb - 82} L${mx + 54.5} ${mb - 100} L${mx + 57} ${mb - 82}Z`);
+}
+
+// ---------- Karaköy street front ----------
+function wall(x0, x1, top, clap = false) {
+  shape(bldL, SP).setAttribute('d', `M${x0} ${BASE} L${x0} ${top} L${x1} ${top} L${x1} ${BASE}`);
+  if (clap) pen(bldL, SP * 0.4).setAttribute('d', Array.from({ length: Math.floor((BASE - top - 40) / 5) }, (_, i) => `M${x0 + 1} ${top + 6 + i * 5} H${x1 - 1}`).join(' '));
+}
+function roof(x0, x1, top, h = 16, over = 5) {
+  shape(bldL, SP).setAttribute('d', `M${x0 - over} ${top} L${x0 + 12} ${top - h} L${x1 - 12} ${top - h} L${x1 + over} ${top}Z`);
+  const n = Math.round((x1 - x0) / 5);
+  pen(bldL, SP * 0.45).setAttribute('d', Array.from({ length: n + 1 }, (_, i) => `M${f(x0 - over + (i * (x1 - x0 + 2 * over)) / n)} ${top} L${f(x0 + 12 + (i * (x1 - x0 - 24)) / n)} ${top - h}`).join(' '));
+  pen(bldL, SP * 0.5).setAttribute('d', Array.from({ length: Math.round((x1 - x0) / 4) }, (_, i) => `M${x0 - over + 2 + i * 4} ${top + 2.6} v-2`).join(' '));
+}
+function cornice(x0, x1, y) {
+  shape(bldL, SP).setAttribute('d', `M${x0 - 3} ${y} H${x1 + 3} V${y + 5} H${x0 - 3}Z`);
+  pen(bldL, SP * 0.5).setAttribute('d', `M${x0} ${y + 8} H${x1}`);
+}
+function sign(x, y, w, h, txt, size = 8.5) {
+  shape(bldL, SP).setAttribute('d', `M${x} ${y}h${w}v${h}h${-w}Z`);
+  const t = el('text', { x: x + w / 2, y: y + h / 2 + size * 0.36, 'text-anchor': 'middle', 'font-family': 'Georgia, serif', 'font-size': size, 'letter-spacing': 1.4, fill: 'currentColor' }, bldL);
+  t.textContent = txt;
+}
+function cumba(x0, x1, y0, y1, rows) {
+  shape(bldL, SP).setAttribute('d', `M${x0} ${y1} V${y0} H${x1} V${y1}Z`);
+  shape(bldL, SP).setAttribute('d', `M${x0 - 3} ${y0} H${x1 + 3} V${y0 - 3} H${x0 - 3}Z`);
+  pen(bldL, SP).setAttribute('d', `M${x0 + 3} ${y1} L${x0 + 12} ${y1 + 14} M${x1 - 3} ${y1} L${x1 - 12} ${y1 + 14} M${x0 + 8} ${y1} L${x0 + 12} ${y1 + 14} M${x1 - 8} ${y1} L${x1 - 12} ${y1 + 14}`);
+  const n = Math.round((x1 - x0) / 17);
+  for (const [ry, rh] of rows) for (let i = 0; i < n; i++) windowAt(bldL, x0 + 4 + i * ((x1 - x0 - 8) / n) + 1.5, ry, (x1 - x0 - 8) / n - 3, rh);
+  pen(bldL, SP * 0.5).setAttribute('d', `M${x0} ${y1 - 4} H${x1}`);
+}
+// B1: stone apartment
+wall(6, 150, 176); roof(6, 150, 172); cornice(6, 150, 172);
+shape(bldL, SP).setAttribute('d', 'M116 156 V144 H126 V159');
+pen(bldL, SP * 0.5).setAttribute('d', 'M6 222 H150 M6 260 H150 M6 296 H150');
+for (const y of [190, 228, 266]) for (const x of [20, 52, 86, 118]) windowAt(bldL, x, y, 12, 24, { arch: true });
+shape(bldL, SP).setAttribute('d', 'M22 334 V306 Q30 299 38 306 V334');
+windowAt(bldL, 56, 304, 76, 22, { bars: false, th: 0.45, off: 0.04 });
+pen(bldL, SP * 0.6).setAttribute('d', 'M75 304 V326 M94 304 V326 M113 304 V326');
+// B2: wooden house with the lokanta
+wall(150, 290, 198, true); roof(150, 290, 198, 18, 7);
+cumba(186, 254, 206, 252, [[214, 28]]);
+windowAt(bldL, 160, 214, 12, 26, { shutters: false });
+windowAt(bldL, 268, 214, 12, 26);
+sign(162, 270, 74, 13, 'LOKANTA');
+{
+  const ax0 = 158, ax1 = 238, ay = 288;
+  shape(bldL, SP).setAttribute('d', `M${ax0} ${ay} H${ax1} L${ax1 + 3} ${ay + 10} H${ax0 - 3}Z`);
+  for (let x = ax0; x < ax1; x += 10) tint(paint(bldL, OCHRE, SP * 0.4), OCHRE).setAttribute('d', `M${x} ${ay} H${x + 5} L${x + 5.4} ${ay + 10} H${x - 0.4}Z`);
+  pen(bldL, SP).setAttribute('d', Array.from({ length: 9 }, (_, i) => `${i ? '' : `M${ax0 - 3} ${ay + 10}`} q${(ax1 - ax0 + 6) / 18} 3 ${(ax1 - ax0 + 6) / 9} 0`).join(' '));
+}
+windowAt(bldL, 164, 302, 66, 24, { bars: false, th: 0.4, off: 0.08 });
+shape(bldL, SP).setAttribute('d', 'M246 334 V296 H264 V334');
+pen(bldL, SP * 0.5).setAttribute('d', 'M249 330 V300 H261 V330 M259 316 v2');
+// B3: the post office
+wall(290, 430, 168); cornice(290, 430, 166);
+shape(bldL, SP).setAttribute('d', 'M287 166 V158 H433 V166');
+sign(318, 174, 84, 14, 'POSTANE', 9);
+for (const y of [198, 246]) for (const x of [302, 334, 370, 402]) windowAt(bldL, x, y, 14, y === 198 ? 30 : 26, { arch: y === 198 });
+pen(bldL, SP * 0.5).setAttribute('d', 'M290 238 H430 M290 280 H430');
+for (const x of [304, 346, 388]) {
+  windowAt(bldL, x, 288, 28, 46, { arch: true, bars: false, sill: false, th: 0.5, off: 0.03 });
+  pen(bldL, SP * 0.5).setAttribute('d', `M${x + 14} ${288 + 14} V334`);
+}
+const flagPole = { x: 422, y: 120 };
+pen(bldL, SP).setAttribute('d', `M${flagPole.x} 158 V${flagPole.y - 2}`);
+const flag = tint(paint(bldL, '#c0392b', SP * 0.7), '#c0392b');
+const crescentA = el('circle', { r: 2.6, fill: '#fdfcf8' }, bldL), crescentB = tint(el('circle', { r: 2.2, fill: '#c0392b' }, bldL), '#c0392b'), starDot = el('circle', { r: 0.8, fill: '#fdfcf8' }, bldL);
+// B4: wooden house with a two-storey bay
+wall(430, 560, 186, true); roof(430, 560, 186, 18, 8);
+cumba(450, 540, 198, 270, [[206, 24], [238, 24]]);
+shape(bldL, SP).setAttribute('d', 'M470 334 V296 H488 V334');
+pen(bldL, SP * 0.5).setAttribute('d', 'M473 330 V300 H485 V330');
+windowAt(bldL, 504, 300, 22, 22, { shutters: true });
+// B5: the ferry pier building
+shape(bldL, SP).setAttribute('d', `M586 ${BASE} V236 H946 V${BASE}`);
+roof(586, 946, 236, 12, 8);
+shape(bldL, SP).setAttribute('d', 'M742 224 V186 H790 V224');
+shape(bldL, SP).setAttribute('d', 'M736 186 L766 166 L796 186Z');
+pen(bldL, SP).setAttribute('d', 'M766 166 V156');
+const clockFace = el('circle', { cx: 766, cy: 205, r: 11, fill: PAPER, stroke: INK, 'stroke-width': SP }, bldL);
+const hourHand = pen(bldL, SP * 1.2), minHand = pen(bldL, SP * 0.8);
+sign(700, 240, 132, 12, 'KARAKÖY İSKELESİ', 8);
+for (const x of [600, 628, 656, 684, 838, 866, 894, 922]) windowAt(bldL, x, 258, 14, 40, { arch: true });
+windowAt(bldL, 738, 262, 56, 72, { arch: true, bars: false, sill: false, th: 0.38 });
+pen(bldL, SP * 0.5).setAttribute('d', 'M766 290 V334');
+
+// ---------- the ferry deck, moored at the Karaköy pier ----------
+// Behind the rail: the stone quay edge and a strip of harbour water (they stay with the town). The deck, its rail and
+// everyone on it rock gently (see "bob" in the loop).
+shape(bldL, SP).setAttribute('d', `M0 ${BASE} H${W} V${BASE + 4} H0Z`);
+const gapWater = el('rect', { x: 0, y: BASE + 4, width: W, height: 12 }, bldL);
+pen(bldL, SP * 0.5).setAttribute('d', Array.from({ length: 26 }, (_, i) => `M${i * 37 + 9} ${f(BASE + 8 + (i % 3) * 2.4)} q4 -1 8 0`).join(' '));
+shape(streetL, SP).setAttribute('d', `M0 348 H${W} V372 H0Z`);
+pen(streetL, SP * 0.35).setAttribute('d', `M0 354 H${W} M0 360 H${W} M0 366 H${W}`);
+pen(streetL, SP * 0.4).setAttribute('d', Array.from({ length: 60 }, () => { const x = R(0, W), row = Math.floor(R(0, 4)); return `M${f(x)} ${348 + row * 6} v6`; }).join(' '));
+shape(streetL, SP).setAttribute('d', `M0 323 H${W} V326.5 H0Z`);
+pen(streetL, SP * 0.7).setAttribute('d', `M0 336 H${W} ` + Array.from({ length: 41 }, (_, i) => `M${i * 24} 326.5 V348`).join(' '));
+for (const x of [150, 618]) {   // lifebuoys on the rail
+  const ring = `M${x - 7} 334 a7 7 0 1 0 14 0 a7 7 0 1 0 -14 0Z M${x - 3.8} 334 a3.8 3.8 0 1 0 7.6 0 a3.8 3.8 0 1 0 -7.6 0Z`;
+  const red = tint(paint(streetL, RED, 0), RED); red.setAttribute('fill-rule', 'evenodd'); red.setAttribute('d', ring);
+  el('path', { d: `M${x + 3.8} 334 H${x + 7} M${x - 3.8} 334 H${x - 7} M${x} 330.2 V327 M${x} 337.8 V341`, stroke: '#fdfcf8', 'stroke-width': 2.6, fill: 'none' }, streetL);
+  pen(streetL, SP * 0.7).setAttribute('d', ring);
+}
+shape(frontL, SP).setAttribute('d', `M0 372 H${W} V381 H0Z`);
+pen(frontL, SP * 0.5).setAttribute('d', `M0 376.5 H${W}`);
+// lamps
+const lamps = [222, 512].map((x) => {
+  shape(frontL, SP).setAttribute('d', `M${x - 1.8} 372 L${x - 1} 300 L${x + 1} 300 L${x + 1.8} 372Z`);
+  shape(frontL, SP).setAttribute('d', `M${x - 4} 372 V366 H${x + 4} V372Z`);
+  const d = `M${x - 4.6} 300 L${x - 6.2} 288 L${x + 6.2} 288 L${x + 4.6} 300Z`;
+  const pane = el('path', { d, fill: '#fdfcf8' }, frontL);
+  el('path', { d, fill: 'none', stroke: INK, 'stroke-width': SP }, frontL);
+  pen(frontL, SP * 0.5).setAttribute('d', `M${x} 288 V300`);
+  shape(frontL, SP).setAttribute('d', `M${x - 8} 288 L${x} 281 L${x + 8} 288Z`);
+  pen(frontL, SP).setAttribute('d', `M${x} 281 V277`);
+  return light(pane, el('circle', { cx: x, cy: 294, r: 34, fill: 'url(#glow)', opacity: 0 }, glowL), 0.3, -1);
+});
+// bollards
+const bollardX = [300, 392, 466];
+for (const x of bollardX) {
+  shape(frontL, SP).setAttribute('d', `M${x - 4} 373 L${x - 4} 365 Q${x - 4} 361.5 ${x} 361.5 Q${x + 4} 361.5 ${x + 4} 365 L${x + 4} 373Z`);
+  pen(frontL, SP * 0.6).setAttribute('d', `M${x - 4} 366 H${x + 4}`);
+}
+
+// ---------- water ----------
+const waterBack = el('rect', { x: 0, y: 381, width: W, height: 100 }, waterBackL);
+const waterFront = el('rect', { x: 0, y: WL + 2, width: W, height: H - WL }, waterFrontL);
+const strokesOf = (parent, n, y0, y1) => Array.from({ length: n }, () => ({ n: el('path', { fill: 'none', stroke: INK, 'stroke-width': SP * 0.7, 'stroke-linecap': 'round', opacity: 0.45 }, parent), x: R(0, W), y: R(y0, y1), len: R(8, 26), ph: R(0, 6), k: (R(0.6, 1.2) * (y0 + y1)) / 800 }));
+const waves = [...strokesOf(waterBackL, 22, 386, 416), ...strokesOf(waterFrontL, 30, 428, 474)];
+const lampRefl = lamps.map((_, i) => Array.from({ length: 5 }, (_, k) => el('path', { stroke: '#ffcf7e', 'stroke-width': 1.3 - k * 0.12, 'stroke-linecap': 'round', fill: 'none', opacity: 0 }, waterBackL)));
+
+// ---------- ferry ----------
+const ferry = { g: el('g', { style: 'cursor:pointer' }, ferryL), x: 770, glow: el('g', {}, glowL), refl: el('g', {}, waterFrontL), horn: -1, moving: false, smokeT: 0 };
+{
+  const g = ferry.g;
+  pen(g, SP).setAttribute('d', 'M-70 -66 L-67 -116 M-67 -116 L-150 -20 M-67 -116 L-6 -100');
+  tint(paint(g, '#c0392b', SP * 0.6), '#c0392b').setAttribute('d', 'M-67 -116 l9 1.5 l-0.6 5 l-8.6 -1.4Z');
+  tint(paint(g, '#262626', SP), '#262626').setAttribute('d', 'M-6 -66 L-10 -106 L12 -106 L9 -66Z');
+  tint(paint(g, '#c0392b', SP * 0.6), '#c0392b').setAttribute('d', 'M-9.1 -97 L11.3 -97 L11 -92 L-8.6 -92Z');
+  pen(g, SP).setAttribute('d', 'M-8 -86 h-4 v-5');
+  shape(g, SP).setAttribute('d', 'M-80 -46 L-80 -66 L80 -66 L80 -46Z');
+  shape(g, SP).setAttribute('d', 'M-86 -66 H86 V-69.5 H-86Z');
+  for (let i = 0; i < 9; i++) windowAt(g, -71 + i * 16, -62, 9, 10, { bars: false, sill: false, glowParent: ferry.glow, glow: 1.5, th: R(0.3, 0.6), off: -1 });
+  shape(g, SP).setAttribute('d', 'M-136 -44 H136 V-47.5 H-136Z');
+  pen(g, SP * 0.7).setAttribute('d', 'M-134 -47.5 V-56 H-80 M80 -56 H134 V-47.5 ' + Array.from({ length: 9 }, (_, i) => `M${-128 + i * 6} -47.5 V-56 M${86 + i * 6} -47.5 V-56`).join(' '));
+  shape(g, SP).setAttribute('d', 'M-128 -14 L-128 -44 L128 -44 L128 -14Z');
+  for (let i = 0; i < 15; i++) windowAt(g, -121 + i * 16.4, -38, 10, 12, { bars: false, sill: false, glowParent: ferry.glow, glow: 1.5, th: R(0.3, 0.6), off: -1 });
+  tint(paint(g, RED, SP * 0.6), RED).setAttribute('d', 'M-124 -22 a3.2 3.2 0 1 0 0.01 0Z');
+  shape(g, SP).setAttribute('d', 'M-162 -17 Q-153 2 -132 8 L132 8 Q153 2 162 -17 Z');
+  tint(paint(g, '#2a2a2a', SP * 0.6), '#2a2a2a').setAttribute('d', 'M-155 -4 Q-148 5 -132 8 L132 8 Q148 5 155 -4 Z');
+  pen(g, SP * 0.7).setAttribute('d', 'M-159 -11 Q-120 -9.4 0 -9.4 Q120 -9.4 159 -11');
+  const name = el('text', { x: -118, y: -11.6, 'font-family': 'Georgia, serif', 'font-size': 6.4, 'letter-spacing': 1.6, fill: 'currentColor' }, g);
+  name.textContent = 'MARTI';
+  for (let i = 0; i < 7; i++) el('path', { stroke: '#ffcf7e', 'stroke-width': 1.2, 'stroke-linecap': 'round', fill: 'none' }, ferry.refl);
+}
+const smoke = Array.from({ length: 22 }, () => ({ n: el('circle', { r: 0, fill: PAPER, stroke: INK, 'stroke-width': 0.6, opacity: 0 }, airL), on: false, x: 0, y: 0, age: 0, life: 4, vy: 10, grow: 2 }));
+function puff(x, y, o = {}) {
+  const s = smoke.find((p) => !p.on); if (!s) return;
+  Object.assign(s, { on: true, x, y, age: 0, life: o.life ?? 4.4, vy: o.vy ?? 9, grow: o.grow ?? 2.1, r0: o.r0 ?? 2 });
+}
+
+// ---------- gulls ----------
+const gulls = [...bollardX.map((x) => ({ home: [x, 361.5], layer: frontL })), { home: [652, 224], layer: bldL }, { home: [884, 224], layer: bldL }].map(({ home, layer }, i) => {
+  const g = el('g', { style: 'cursor:pointer' }, layer);
+  const perch = el('g', {}, g);
+  pen(perch, 1).setAttribute('d', 'M-1 -2.6 V0 M1.2 -2.6 V0');
+  blot(perch).setAttribute('d', 'M-6 -6.4 L-10.4 -8 L-9.6 -5 Z');
+  el('ellipse', { cx: 0, cy: -6, rx: 6.4, ry: 3.6, fill: PAPER, stroke: INK, 'stroke-width': 1.1 }, perch);
+  tint(paint(perch, GULLWING, 0.9), GULLWING).setAttribute('d', 'M-6.4 -7 Q0 -10.6 5 -7.4 Q0 -4.6 -6.4 -5.4Z');
+  el('circle', { cx: 5.6, cy: -10.6, r: 2.6, fill: PAPER, stroke: INK, 'stroke-width': 1.1 }, perch);
+  tint(paint(perch, MUSTARD, 0.5), MUSTARD).setAttribute('d', 'M7.8 -11 L11 -10.2 L7.9 -9.6Z');
+  const fly = el('g', { visibility: 'hidden' }, g);
+  const wings = pen(fly, 1.2);
+  el('ellipse', { cx: 0, cy: 0, rx: 4.2, ry: 1.8, fill: PAPER, stroke: INK, 'stroke-width': 1 }, fly);
+  el('circle', { cx: 4.4, cy: -0.8, r: 1.6, fill: PAPER, stroke: INK, 'stroke-width': 1 }, fly);
+  const hit = el('circle', { cx: home[0], cy: home[1] - 7, r: 11, fill: 'transparent', style: 'cursor:pointer' }, hitL);
+  el('title', {}, hit).textContent = document.documentElement.lang === 'tr' ? 'Martı' : 'Gull';
+  const G = { g, perch, fly, wings, home, layer, state: 'perch', t: 0, dir: i % 2 ? -1 : 1, pos: [...home], hit, idle: R(0, 5) };
+  hit.addEventListener('pointerdown', (e) => { e.stopPropagation(); flushGulls(); });
+  return G;
+});
+function flushGulls(delayMax = 0.4) {
+  for (const G of gulls) if (G.state === 'perch') {
+    G.state = 'fly'; G.t = -RR() * delayMax;
+    G.c = [clamp(G.home[0] + (RR() - 0.5) * 240, 90, 870), 120 + RR() * 110];
+    G.rad = 40 + RR() * 60; G.w = (1 + RR() * 0.6) * (RR() < 0.5 ? -1 : 1); G.a0 = RR() * 6.28; G.dur = 6 + RR() * 3;
+    airL.appendChild(G.g);
+  }
+}
+
+// ---------- cat ----------
+const cat = { g: el('g', {}, frontL), t: -1, x: 166, y: 371 };
+{
+  const g = cat.g;
+  cat.tail = pen(g, 1.3);
+  shape(g, 1.2).setAttribute('d', 'M-7 0 Q-11 -9 -5 -15 Q-1 -18 3 -15 Q6 -9 5 0 Z');
+  pen(g, 1.1).setAttribute('d', 'M2.4 -8 L2.8 0 M4 -8 L4.4 0');
+  blot(g).setAttribute('d', 'M-6.4 -10 Q-4 -13.6 -0.6 -12.4 Q-3 -9.4 -6 -8Z M-8.4 -4 Q-6 -6 -4.6 -4.6 Q-6 -2.6 -8 -2.4Z');
+  cat.head = el('g', {}, g);
+  blot(cat.head).setAttribute('d', 'M-0.6 -20.6 L0 -24.6 L2.2 -21.6Z M3.4 -21.6 L5.2 -24.6 L5.8 -20.6Z');
+  el('ellipse', { cx: 2.6, cy: -18.6, rx: 4, ry: 3.4, fill: PAPER, stroke: INK, 'stroke-width': 1.2 }, cat.head);
+  const hit = el('rect', { x: cat.x - 12, y: cat.y - 18, width: 20, height: 19, fill: 'transparent', style: 'cursor:pointer' }, hitL);
+  el('title', {}, hit).textContent = document.documentElement.lang === 'tr' ? 'Kedi' : 'Cat';
+  hit.addEventListener('pointerdown', (e) => { e.stopPropagation(); if (cat.t < 0) cat.t = 0; });
+}
+
+// ---------- Saadet, sketching on a folding stool ----------
+const SX = 104, SY = 368;
+const sa = { g: el('g', { style: 'cursor:pointer' }, walkL), y: SY };
+place(sa.g, SX, SY, 1, SC);
+{
+  const g = sa.g;
+  shape(g).setAttribute('d', 'M20.5 98 L17.8 73 L21.4 72.6 L24.4 98Z');   // a ferry bench
+  pen(g).setAttribute('d', 'M23 120 V99.8 M51 120 V99.8');
+  shape(g).setAttribute('d', 'M19 97.6 H54 L53.6 99.8 H19.4Z');
+  sa.legs = [limb(g, 4), limb(g, 4)];
+  sa.legs[0].draw([[37, 96.5], [56, 96.5], [55.5, 118.4]], [0.3, 0.8]);
+  sa.legs[1].draw([[38, 96], [58.5, 95.5], [59.5, 118.4]], [0.3, 0.8]);
+  const s0 = blot(g), s1 = blot(g); shoe(s0, [55.5, 118.4], 0); shoe(s1, [59.5, 118.4], 0);
+  sa.farArm = limb(g, 3.3);
+  sa.dress = tint(paint(g, RED), RED);
+  sa.book = el('g', {}, g);
+  blot(sa.book).setAttribute('d', 'M47 85.5 L63 83 L63.2 84.4 L47.2 87Z');
+  shape(sa.book, PEN * 0.8).setAttribute('d', 'M47 85.5 L63 83 L62.5 77.6 L46.8 80.2Z');
+  pen(sa.book, 0.5).setAttribute('d', 'M50 83.6 L50 81.2 L52 79.8 L54 81 L54 83.2 M56 82.6 Q57.8 80 60 81.8 M49 84.6 L60.6 82.8');
+  sa.head = el('ellipse', { rx: 3.6, ry: 4.6, fill: PAPER, stroke: INK, 'stroke-width': PEN }, g);
+  sa.hair = blot(g);
+  sa.band = tint(paint(g, MUSTARD, PEN * 0.6), MUSTARD);
+  sa.nearArm = limb(g, 3.3);
+  sa.pencil = pen(g, 0.9);
+  const hit = el('rect', { x: SX - 9, y: SY - 34, width: 24, height: 35, fill: 'transparent', style: 'cursor:pointer' }, hitL);
+  hit.addEventListener('pointerdown', (e) => { e.stopPropagation(); startEvent(); });
+}
+function drawSaadet(t, ev) {
+  const b = Math.sin(t * 1.6) * 0.35;
+  let up = 0, rch = 0;
+  if (ev.on) { const c = ev.t; up = smooth(0, 0.4, c) * (1 - smooth(4.2, 5.2, c)); rch = smooth(0.05, 0.7, c) * (1 - smooth(1.4, 2.2, c)); }
+  sa.dress.setAttribute('d', `M36.4 ${f(61 + b)} Q40.5 ${f(58.6 + b)} 44.6 ${f(61.4 + b)} L46 ${f(80 + b * 0.5)} Q46.6 87.5 50 88.6 L60.6 90.2 Q63.2 93 61.8 99.6 L44 100.6 Q35.6 101.2 32.6 97 Q32.4 84 34.8 ${f(70 + b * 0.5)}Z`);
+  const farS = [39.2, 64 + b], farH = [47.8, 84.6];
+  sa.farArm.draw([farS, joint(farS, farH, 15, 14, -1), farH], [0.2, 0.5]);
+  const hx = 43.2 - up * 0.4, hy = 52.4 + b - up * 0.9;
+  sa.head.setAttribute('cx', f(hx)); sa.head.setAttribute('cy', f(hy));
+  sa.hair.setAttribute('d', `M${f(hx - 3.9)} ${f(hy + 3.6)} Q${f(hx - 5.4)} ${f(hy - 4.6)} ${f(hx + 0.2)} ${f(hy - 5.2)} Q${f(hx + 4.6)} ${f(hy - 5)} ${f(hx + 4.2)} ${f(hy - 1.4)} Q${f(hx + 1.4)} ${f(hy - 3)} ${f(hx - 0.6)} ${f(hy - 0.8)} Q${f(hx - 0.8)} ${f(hy + 3.4)} ${f(hx - 1.4)} ${f(hy + 5.6)} Q${f(hx - 3)} ${f(hy + 6)} ${f(hx - 3.9)} ${f(hy + 3.6)}Z`);
+  sa.band.setAttribute('d', `M${f(hx - 3.2)} ${f(hy - 4.4)} Q${f(hx + 0.4)} ${f(hy - 6.2)} ${f(hx + 3.9)} ${f(hy - 3.4)} L${f(hx + 3.5)} ${f(hy - 2.5)} Q${f(hx + 0.4)} ${f(hy - 4.9)} ${f(hx - 2.9)} ${f(hy - 3.3)}Z`);
+  const act = smooth(-0.2, 0.4, Math.sin(t * 0.55)) * (1 - up);
+  const hs = [54.6 + (Math.sin(t * 5.3) * 1.6 + Math.sin(t * 1.7) * 1.2) * act, 81.2 + Math.sin(t * 7.1) * 0.6 * act];
+  const nearS = [41.8, 65 + b], RT = [61, 37];
+  const hand = lerpP(hs, RT, rch);
+  const elb = lerpP(joint(nearS, hs, 15, 14, -1), joint(nearS, RT, 15, 14.5, 1), rch);
+  sa.nearArm.draw([nearS, elb, hand], [0.2, 0.4]);
+  sa.pencil.setAttribute('d', rch > 0.5 ? 'M0 0' : `M${pt(hand)} l1.6 -3.4`);
+}
+const bookScene = toScene(SX, SY, 1, 57, 80, SC);
+
+// ---------- people ----------
+const people = [];
+function makePerson(o) {
+  const g = el('g', { style: 'cursor:pointer' }, walkL);
+  const P = { ...o, g, phase: RR(), go: 1, goT: 1, tipT: -1, reach: 0, target: null, look: [0, 0], armS: [spring(60, 9), spring(60, 9)], bagP: pendulum(14, 1.8), trayS: spring(30, 5), hand: [52, 80] };
+  P.walk = gait({ kind: 'walk', ...(o.gait || {}) });
+  P.farArm = limb(g, 3.6); if (o.sleeve) tintL(P.farArm, o.sleeve);
+  P.legs = [limb(g, 4.2), limb(g, 4.2)]; if (o.trousers) P.legs.forEach((l) => tintL(l, o.trousers));
+  P.shoes = [blot(g), blot(g)];
+  P.coat = o.coat ? tint(paint(g, o.coat), o.coat) : shape(g);
+  P.seam = pen(g, PEN * 0.6);
+  P.head = el('ellipse', { rx: 3.6, ry: 4.6, fill: PAPER, stroke: INK, 'stroke-width': PEN }, g);
+  P.hair = blot(g);
+  if (o.hat === 'cap') { P.crown = shape(g, PEN * 0.9); P.capBand = tint(paint(g, NAVY, PEN * 0.6), NAVY); P.visor = blot(g); }
+  else if (o.hat) P.hatN = blot(g);
+  P.nearArm = limb(g, 3.6); if (o.sleeve) tintL(P.nearArm, o.sleeve);
+  if (o.bag) { P.bagG = el('g', {}, g); P.bagN = tint(paint(P.bagG, o.bag, PEN * 0.8), o.bag); P.bagH = pen(P.bagG, PEN * 0.7); }
+  if (o.tray) {
+    P.trayG = el('g', {}, g);
+    tint(paint(P.trayG, '#b98a52', PEN * 0.8), '#b98a52').setAttribute('d', 'M-13 0 Q0 2.6 13 0 L13 -1.8 Q0 0.8 -13 -1.8Z');
+    for (const [x, y] of [[-8, -3], [0, -3], [8, -3], [-4, -6], [4, -6], [0, -9]]) {
+      tint(el('ellipse', { cx: x, cy: y, rx: 4, ry: 1.7, fill: SIMIT, stroke: INK, 'stroke-width': PEN * 0.7 }, P.trayG), SIMIT);
+      el('ellipse', { cx: x, cy: y - 0.2, rx: 1.5, ry: 0.5, fill: 'none', stroke: INK, 'stroke-width': PEN * 0.5 }, P.trayG);
+    }
+  }
+  g.addEventListener('pointerdown', (e) => { e.stopPropagation(); react(P); });
+  people.push(P);
+  return P;
+}
+function react(P) {
+  if (P.tray) { say(toScene(P.x, P.y, P.dir, 44, 10, SC), 'Simiiit!'); P.shout = 0; return; }
+  if (P.tipT < 0) P.tipT = 0;
+}
+const sayings = [];
+function say(at, txt) {
+  const n = el('text', { x: f(at[0]), y: f(at[1]), 'text-anchor': 'middle', 'font-family': '"Courier Prime", "Courier New", monospace', 'font-size': 9, fill: 'currentColor' }, airL);
+  n.textContent = txt; sayings.push({ n, x: at[0], y: at[1], t: 0 });
+}
+function drawPerson(P, t, dt) {
+  P.go += (P.goT - P.go) * Math.min(1, dt * 5);
+  let tip = 0;
+  if (P.tipT >= 0) { P.tipT += dt; tip = P.tipT < 0.35 ? ease(P.tipT / 0.35) : P.tipT < 1.2 ? 1 : 1 - ease((P.tipT - 1.2) / 0.4); if (P.tipT > 1.6) P.tipT = -1; }
+  const go = P.go * (1 - tip * 0.85), walk = P.walk;
+  P.phase += (dt / walk.period) * go;
+  P.x += P.dir * walk.speed * SC * dt * go;
+  place(P.g, P.x, P.y, P.dir, SC);
+  const p = walk.pose(P.phase, go), b = p.bob;
+  p.feet.forEach((fo, i) => { P.legs[i].draw([p.hip, fo.knee, fo.ankle], [0.3, 0.8]); shoe(P.shoes[i], fo.ankle, fo.pitch); });
+  P.g.insertBefore(P.legs[p.front].g, P.coat); P.g.insertBefore(P.shoes[p.front], P.coat);
+  const kF = p.feet[p.front].knee, aF = p.feet[p.front].ankle, aR = p.feet[1 - p.front].ankle;
+  const sh = [41, 41 + b];
+  if (P.garment === 'shirt') {
+    P.coat.setAttribute('d', `M${f(sh[0] - 6)} ${f(sh[1] + 1)} Q${f(sh[0] - 1)} ${f(sh[1] - 2.4)} ${f(sh[0] + 5)} ${f(sh[1] + 1)} L${f(sh[0] + 6.4)} ${f(75 + b)} L${f(sh[0] - 8.2)} ${f(76 + b)}Z`);
+    P.seam.setAttribute('d', `M${f(sh[0] - 7.6)} ${f(72 + b)} L${f(sh[0] + 6.2)} ${f(71 + b)}`);
+  } else {
+    const hem = P.hem ?? 92, fx = Math.max(kF[0] + 2.4, 46.4), bx = P.garment === 'dress' ? Math.min(31, aR[0] - 1) : 30.6;
+    P.coat.setAttribute('d', `M${f(sh[0] - 6)} ${f(sh[1] + 1)} Q${f(sh[0] - 1)} ${f(sh[1] - 2.4)} ${f(sh[0] + 5)} ${f(sh[1] + 1)} L${f(fx - 0.6)} ${f(70 + b)} Q${f(fx)} ${f(82 + b * 0.5)} ${f(Math.max(fx, aF[0] - 4))} ${hem} L${f(bx)} ${hem + 1} L33.2 ${f(70 + b)}Z`);
+    P.seam.setAttribute('d', P.garment === 'dress' ? `M${f(sh[0] - 5)} ${f(66 + b)} Q${f(sh[0])} ${f(67.4 + b)} ${f(sh[0] + 5.6)} ${f(66 + b)}` : `M${f(sh[0] + 2.6)} ${f(sh[1] + 4)} L${f(sh[0] + 3.8)} ${f(66 + b)}`);
+  }
+  const hc = [42.6 + P.look[0], 31.6 + b + P.look[1]], hx = hc[0], hy = hc[1];
+  P.head.setAttribute('cx', f(hx)); P.head.setAttribute('cy', f(hy));
+  const long = P.hairStyle === 'bob';
+  P.hair.setAttribute('d', `M${f(hx - 3.8)} ${f(hy + (long ? 4.6 : 0.6))} Q${f(hx - 4.8)} ${f(hy - 5)} ${f(hx + 0.4)} ${f(hy - 5.1)} Q${f(hx + 3.8)} ${f(hy - 4.8)} ${f(hx + 3.9)} ${f(hy - 2.2)} Q${f(hx + 0.6)} ${f(hy - 3.2)} ${f(hx - 1)} ${f(hy - 0.4)} Q${f(hx - 1.2)} ${f(hy + (long ? 4 : 1.6))} ${f(hx - 1.8)} ${f(hy + (long ? 5.8 : 2.6))}Z`);
+  const lift = P.hat ? tip * 5 : 0;
+  if (P.hat === 'cap') {
+    P.crown.setAttribute('d', `M${f(hx - 4.6)} ${f(hy - 3.6 - lift)} L${f(hx - 5.8)} ${f(hy - 7.6 - lift)} Q${f(hx + 0.4)} ${f(hy - 10 - lift)} ${f(hx + 6.4)} ${f(hy - 7.8 - lift)} L${f(hx + 4.8)} ${f(hy - 3.6 - lift)}Z`);
+    P.capBand.setAttribute('d', `M${f(hx - 4.8)} ${f(hy - 3.6 - lift)} L${f(hx + 4.8)} ${f(hy - 3.6 - lift)} L${f(hx + 5.2)} ${f(hy - 5.4 - lift)} L${f(hx - 5.2)} ${f(hy - 5.4 - lift)}Z`);
+    P.visor.setAttribute('d', `M${f(hx + 3.4)} ${f(hy - 4 - lift)} L${f(hx + 8.6)} ${f(hy - 3 - lift)} L${f(hx + 3.8)} ${f(hy - 2.6 - lift)}Z`);
+  } else if (P.hat === 'fedora') {
+    P.hatN.setAttribute('d', `M${f(hx - 6.4)} ${f(hy - 3.6 - lift)} L${f(hx + 6.6)} ${f(hy - 3.6 - lift)} Q${f(hx + 4.4)} ${f(hy - 5 - lift)} ${f(hx + 4)} ${f(hy - 8 - lift)} Q${f(hx)} ${f(hy - 11 - lift)} ${f(hx - 3.8)} ${f(hy - 8 - lift)} Q${f(hx - 4.2)} ${f(hy - 5 - lift)} ${f(hx - 6.4)} ${f(hy - 3.6 - lift)}Z`);
+  } else if (P.hat === 'flat') {
+    P.hatN.setAttribute('d', `M${f(hx - 4.4)} ${f(hy - 2.4)} Q${f(hx - 4.8)} ${f(hy - 7.2)} ${f(hx + 1)} ${f(hy - 7.2)} Q${f(hx + 5)} ${f(hy - 6.8)} ${f(hx + 5.2)} ${f(hy - 3.8)} L${f(hx + 8)} ${f(hy - 2.6)} L${f(hx - 4.4)} ${f(hy - 2.4)}Z`);
+  }
+  // arms swing opposite the legs, through springs
+  const legSwing = (p.feet[0].ankle[0] - 40) / (walk.stride / 2);
+  const farA = (P.armS[0].step(-legSwing * 16 * go, dt) * Math.PI) / 180;
+  const nearA = (P.armS[1].step(legSwing * 14 * go, dt) * Math.PI) / 180;
+  const shF = [sh[0] - 1, sh[1] + 2], shN = [sh[0] + 1.6, sh[1] + 2.4];
+  const elbF = [shF[0] + 17 * Math.sin(farA), shF[1] + 17 * Math.cos(farA)];
+  P.farArm.draw([shF, elbF, [elbF[0] + 16 * Math.sin(farA + 0.25), elbF[1] + 16 * Math.cos(farA + 0.25)]], [0.2, 0.5]);
+  let elb = [shN[0] + 17 * Math.sin(nearA), shN[1] + 17 * Math.cos(nearA)];
+  let hand = [elb[0] + 16 * Math.sin(nearA + 0.1), elb[1] + 16 * Math.cos(nearA + 0.1)];
+  let reach = P.reach, target = P.target;
+  if (P.tray) { reach = 1; target = [hx + 6, hy - 6.4]; }
+  if (tip > 0.01 && P.hat) { reach = Math.max(reach, tip); target = [hx + 4, hy - 4 - lift]; }
+  if (reach > 0.001 && target) { elb = lerpP(elb, joint(shN, target, 17, 16, 1), reach); hand = lerpP(hand, target, reach); }
+  P.nearArm.draw([shN, elb, hand], [0.2, 0.4]);
+  P.hand = hand;
+  if (P.bagG) {
+    const accel = Math.cos(2 * Math.PI * P.phase * 2) * 1.6 * go;
+    const ca = P.bagP.step(-accel - wind.value * 0.3, dt);
+    P.bagG.setAttribute('transform', `rotate(${f(ca * 57.3)} ${pt(hand)})`);
+    P.bagH.setAttribute('d', `M${f(hand[0] - 2.4)} ${f(hand[1] + 2.6)} Q${pt(hand)} ${f(hand[0] + 2.4)} ${f(hand[1] + 2.6)}`);
+    P.bagN.setAttribute('d', `M${f(hand[0] - 5)} ${f(hand[1] + 2.6)} L${f(hand[0] + 5)} ${f(hand[1] + 2.6)} L${f(hand[0] + 6)} ${f(hand[1] + 10)} L${f(hand[0] - 6)} ${f(hand[1] + 10)}Z`);
+  }
+  if (P.trayG) {
+    const tilt = P.trayS.step(b * 1.6 + Math.sin(P.phase * Math.PI * 4) * 0.8 * go, dt);
+    P.trayG.setAttribute('transform', `translate(${f(hx + 1)} ${f(hy - 5.6)}) rotate(${f(tilt)})`);
+  }
+  // keep the hand-held paper in front
+  if (P === kemal) P.g.appendChild(P.nearArm.g);
+}
+
+// The ferry worker patrols the deck; catches the sketch when it flies
+const kemal = makePerson({ x: 420, y: 360, dir: 1, coat: NAVY, sleeve: NAVY, trousers: '#273249', hat: 'cap', garment: 'coat', hem: 90 });
+kemal.turnT = -1;
+// passers-by
+const kinds = {
+  simit: () => ({ garment: 'shirt', trousers: '#3b3a38', hat: 'flat', tray: true, gait: { period: 1.15, stride: 21 } }),
+  lady: () => ({ garment: 'dress', coat: '#4d7a68', hem: 98, hairStyle: 'bob', bag: '#6b4a32', gait: { stride: 20 } }),
+  gent: () => ({ garment: 'coat', coat: '#7b6a55', trousers: '#2f2f2f', hat: 'fedora' }),
+};
+function spawn(kind, x, dir, y) { const P = makePerson({ ...kinds[kind](), kind, x, dir, y }); P.passer = true; return P; }
+spawn('simit', 470, -1, 352);
+spawn('lady', 600, -1, 367);
+
+// ---------- the sketch that flies ----------
+const paper = el('g', { visibility: 'hidden' }, airL);
+shape(paper, 0.7).setAttribute('d', 'M-4.4 -5.4 L4.4 -5 L4.6 5.4 L-4.2 5.2Z');
+pen(paper, 0.4).setAttribute('d', 'M-2.6 2.4 L-2.6 -0.4 L-0.6 -2 L1.4 -0.4 L1.4 2.4 M-3 3.6 L3 3.6');
+const FLY = 2.8;
+const ev = { on: false, t: 0, cool: 0, autoAt: 3.5, gone: 0 };
+function startEvent() {
+  if (ev.on || ev.cool > 0) return;
+  ev.on = true; ev.t = 0; ev.auto = false; ev.facing = false;
+  flushGulls(0.6);
+}
+function kemalBrain(dt) {
+  const K = kemal;
+  if (ev.on) {
+    const c = ev.t;
+    K.goT = c < FLY + 3.3 ? 0 : 1;
+    if (c > 0.45 && !ev.facing) { ev.facing = true; K.dir = K.x > SX ? -1 : 1; }
+    const UP = [55, 15], READ = [53.5, 50], POCKET = [47, 68];
+    if (c < FLY) { K.reach = smooth(FLY - 1, FLY - 0.25, c); K.target = UP; }
+    else {
+      const h = c - FLY;
+      K.target = h < 2.2 ? lerpP(UP, READ, smooth(0.3, 1.1, h)) : lerpP(READ, POCKET, smooth(2.2, 2.8, h));
+      K.reach = 1 - smooth(3.0, 3.5, h);
+    }
+    K.look = [0.5 * K.reach, -1.2 * (c < FLY + 0.5 ? K.reach : 0) + 0.8 * smooth(FLY + 0.6, FLY + 1.2, c) * (1 - smooth(FLY + 2.2, FLY + 2.8, c))];
+    return;
+  }
+  K.reach = 0; K.look = [0, 0];
+  if (K.turnT >= 0) {
+    K.turnT += dt; K.goT = 0;
+    if (K.turnT > 0.5 && !K.turned) { K.dir *= -1; K.turned = true; }
+    if (K.turnT > 0.9) { K.turnT = -1; K.goT = 1; }
+    return;
+  }
+  K.goT = 1;
+  if ((K.x > 548 && K.dir > 0) || (K.x < 248 && K.dir < 0)) { K.turnT = 0; K.turned = false; }
+}
+
+// ---------- time, wind, scrubbing ----------
+const wind = pointerWind(svg, 0.3);
+const q = new URLSearchParams(location.search);
+let tau = q.has('tau') ? Number(q.get('tau')) : 0.62;
+const DAY = 100;
+let scrub = null;
+skyRect.style.cursor = 'ew-resize';
+skyRect.addEventListener('pointerdown', (e) => { scrub = e.clientX; svg.setPointerCapture?.(e.pointerId); });
+svg.addEventListener('pointermove', (e) => { if (scrub === null) return; tau += ((e.clientX - scrub) / svg.getBoundingClientRect().width) * 0.5; scrub = e.clientX; });
+const endScrub = () => { scrub = null; };
+svg.addEventListener('pointerup', endScrub); svg.addEventListener('pointercancel', endScrub);
+ferry.g.addEventListener('pointerdown', (e) => { e.stopPropagation(); if (ferry.horn < 0) { ferry.horn = 0; flushGulls(0.3); } });
+
+let first = true, spawnIn = 9;
+run((t, dt) => {
+  if (scrub === null) tau += dt / DAY;
+  tau = ((tau % 1) + 1) % 1;
+  const P = palette(tau);
+  applyPalette(svg, P);
+  card.style.color = rgb(P.ink);
+  const mins = Math.floor(tau * 24 * 60);
+  clockEl.textContent = `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+  wind.step(t);
+  for (const [n, c] of tinted) n.setAttribute('fill', nightTint(c, P));
+
+  // sky
+  skyTop.setAttribute('stop-color', rgb(P.top)); skyBot.setAttribute('stop-color', rgb(P.bottom));
+  for (const s of stars) s.n.setAttribute('opacity', f(P.night * (0.55 + 0.45 * Math.sin(t * s.k + s.ph))));
+  const arc = (u) => [60 + u * 840, 330 - Math.sin(Math.PI * u) * 270];
+  const su = (tau - 0.22) / 0.56;
+  if (su > 0 && su < 1) { const [x, y] = arc(su); sunG.setAttribute('transform', `translate(${f(x)} ${f(y)})`); sunG.setAttribute('visibility', 'visible'); }
+  else sunG.setAttribute('visibility', 'hidden');
+  sun.setAttribute('fill', rgb(mix([255, 246, 224], [246, 170, 118], P.sunset)));
+  sunHalo.setAttribute('opacity', f(P.sunset * 0.9));
+  const mu = (((tau + 0.5) % 1) - 0.22) / 0.56;
+  if (mu > 0 && mu < 1) { const [x, y] = arc(mu); moonG.setAttribute('transform', `translate(${f(x)} ${f(y)})`); moonG.setAttribute('opacity', f(P.night)); }
+  else moonG.setAttribute('opacity', 0);
+  for (const c of clouds) {
+    c.x += (3 + wind.value * 5) * dt;
+    if (c.x > W + 70) c.x = -80; if (c.x < -90) c.x = W + 60;
+    const tr = `translate(${f(c.x)} ${c.y}) scale(${c.s})`;
+    c.n.setAttribute('transform', tr); c.tail.setAttribute('transform', tr);
+  }
+
+  // lights
+  for (const L of lights) {
+    let target = smooth(L.th - 0.08, L.th + 0.04, P.lamp);
+    if (L.off > 0 && tau > L.off && tau < 0.3) target = 0;
+    L.v = first ? target : L.v + (target - L.v) * Math.min(1, dt * 2.5);
+    L.pane.setAttribute('fill', rgb(mix(P.paper, WARM, L.v * 0.95)));
+    L.glow.setAttribute('opacity', f(L.v * 0.6));
+  }
+
+  // clock tower and flag
+  const hrs = tau * 24;
+  const ha = ((hrs % 12) / 12) * Math.PI * 2, ma = (hrs % 1) * Math.PI * 2;
+  hourHand.setAttribute('d', `M766 205 l${f(Math.sin(ha) * 6)} ${f(-Math.cos(ha) * 6)}`);
+  minHand.setAttribute('d', `M766 205 l${f(Math.sin(ma) * 9)} ${f(-Math.cos(ma) * 9)}`);
+  {
+    const fx = flagPole.x, fy = flagPole.y, amp = 1.2 + Math.abs(wind.value) * 1.6, len = 18 - Math.max(0, 0.6 - Math.abs(wind.value)) * 4;
+    const a1 = Math.sin(t * 6) * amp, a2 = Math.sin(t * 6 - 1.6) * amp, droop = Math.max(0, 0.8 - Math.abs(wind.value)) * 3;
+    flag.setAttribute('d', `M${fx} ${fy} Q${f(fx + len / 2)} ${f(fy + a1)} ${f(fx + len)} ${f(fy + a2 + droop)} L${f(fx + len)} ${f(fy + 11 + a2 + droop)} Q${f(fx + len / 2)} ${f(fy + 11 + a1)} ${fx} ${fy + 11}Z`);
+    const cx = fx + len * 0.4, cy = fy + 5.5 + a1 * 0.7 + droop * 0.3;
+    crescentA.setAttribute('cx', f(cx)); crescentA.setAttribute('cy', f(cy));
+    crescentB.setAttribute('cx', f(cx + 0.8)); crescentB.setAttribute('cy', f(cy));
+    starDot.setAttribute('cx', f(cx + 3.6)); starDot.setAttribute('cy', f(cy));
+  }
+
+  // water
+  const water = rgb(mix(P.paper, [128, 160, 186], 0.16));
+  waterBack.setAttribute('fill', water); waterFront.setAttribute('fill', water); gapWater.setAttribute('fill', water);
+  const bob = `translate(0 ${f(Math.sin(t * 1.05) * 0.7)})`;
+  for (const l of [streetL, walkL, frontL, hitL]) l.setAttribute('transform', bob);
+  for (const s of waves) {
+    s.x += (5 + wind.value * 7) * s.k * dt;
+    if (s.x > W + 30) s.x = -30; if (s.x < -30) s.x = W + 30;
+    const y = s.y + Math.sin(t * 0.9 + s.ph) * 1.2;
+    s.n.setAttribute('d', `M${f(s.x)} ${f(y)} q${f(s.len / 2)} ${f(-1 - Math.sin(t + s.ph) * 0.6)} ${f(s.len)} 0`);
+  }
+  lamps.forEach((L, i) => lampRefl[i].forEach((n, k) => {
+    const x = [222, 512][i] + Math.sin(t * 2 + k * 1.7) * 2.4, y = 388 + k * 5.6, w = 8 - k * 0.9;
+    n.setAttribute('d', `M${f(x - w)} ${f(y)} H${f(x + w)}`); n.setAttribute('opacity', f(L.v * (0.8 - k * 0.12)));
+  }));
+
+  // ferry: arrive, wait, leave, away
+  {
+    const c = (t + 10) % 52;
+    let x;
+    if (c < 8) x = lerp(1250, 770, 1 - (1 - c / 8) ** 2);
+    else if (c < 26) x = 770;
+    else if (c < 42) x = lerp(770, -270, ((c - 26) / 16) ** 1.7);
+    else x = 1250;
+    ferry.moving = c < 8 || (c > 26 && c < 42);
+    ferry.x = x;
+    const y = WL + Math.sin(t * 1.1) * 0.7, rot = Math.sin(t * 0.8) * 0.35;
+    const tr = `translate(${f(x)} ${f(y)}) rotate(${f(rot)})`;
+    ferry.g.setAttribute('transform', tr); ferry.glow.setAttribute('transform', tr);
+    ferry.refl.setAttribute('transform', `translate(${f(x)} ${WL})`);
+    const fl = lights.filter((L) => L.glow.parentNode === ferry.glow);
+    const lit = fl.reduce((a, L) => a + L.v, 0) / fl.length;
+    [...ferry.refl.children].forEach((n, k) => {
+      const rx = -110 + k * 36 + Math.sin(t * 1.7 + k) * 3, ry = 10 + (k % 3) * 4;
+      n.setAttribute('d', `M${f(rx - 7)} ${ry} H${f(rx + 7)}`); n.setAttribute('opacity', f(lit * 0.7));
+    });
+    ferry.smokeT -= dt;
+    if (ferry.smokeT <= 0 && x > -200 && x < 1180) { puff(x + 1, y - 106); ferry.smokeT = ferry.moving ? 0.45 : 1.5; }
+    if (ferry.horn >= 0) {
+      if (ferry.horn < 1.2 && Math.floor(ferry.horn * 10) !== Math.floor((ferry.horn + dt) * 10)) puff(x - 12, y - 92, { vy: 24, grow: 3, life: 1.6, r0: 1.4 });
+      ferry.horn += dt; if (ferry.horn > 3) ferry.horn = -1;
+    }
+  }
+  for (const s of smoke) {
+    if (!s.on) { s.n.setAttribute('opacity', 0); continue; }
+    s.age += dt; if (s.age > s.life) { s.on = false; continue; }
+    s.y -= s.vy * dt; s.x += (wind.value * 14 + 3) * dt;
+    s.n.setAttribute('cx', f(s.x)); s.n.setAttribute('cy', f(s.y)); s.n.setAttribute('r', f(s.r0 + s.age * s.grow));
+    s.n.setAttribute('opacity', f((1 - s.age / s.life) * 0.85));
+  }
+
+  // gulls
+  for (const G of gulls) {
+    if (G.state === 'perch') {
+      G.idle -= dt;
+      if (G.idle < 0) { G.idle = 2 + RR() * 4; G.dir *= RR() < 0.5 ? -1 : 1; }
+      G.g.setAttribute('transform', `translate(${G.home[0]} ${G.home[1]}) scale(${0.62 * G.dir} 0.62)`);
+      G.perch.setAttribute('visibility', 'visible'); G.fly.setAttribute('visibility', 'hidden');
+      continue;
+    }
+    G.t += dt;
+    if (G.t < 0) continue;
+    const a = G.a0 + G.w * G.t, circ = [G.c[0] + G.rad * Math.cos(a), G.c[1] + G.rad * 0.55 * Math.sin(a)];
+    const kin = ease(clamp(G.t / 1.4, 0, 1)), kout = ease(clamp((G.t - (G.dur - 1.8)) / 1.8, 0, 1));
+    const pos = lerpP(lerpP(G.home, circ, kin), G.home, kout);
+    if (Math.abs(pos[0] - G.pos[0]) > 0.05) G.dir = pos[0] > G.pos[0] ? 1 : -1;
+    G.pos = pos;
+    const fl = Math.sin(G.t * 13) * 3.4 * (1 - kout * 0.7);
+    G.wings.setAttribute('d', `M-10 ${f(-1.6 + fl)} Q-4.6 ${f(-4.2 + fl * 0.4)} 0 0 Q4.6 ${f(-4.2 + fl * 0.4)} 10 ${f(-1.6 + fl)}`);
+    const landing = G.t > G.dur - 0.25;
+    G.g.setAttribute('transform', `translate(${f(pos[0])} ${f(pos[1] - (landing ? 0 : 6))}) scale(${0.62 * G.dir} 0.62)`);
+    G.perch.setAttribute('visibility', landing ? 'visible' : 'hidden'); G.fly.setAttribute('visibility', landing ? 'hidden' : 'visible');
+    if (G.t >= G.dur) { G.state = 'perch'; G.layer.appendChild(G.g); }
+  }
+
+  // cat
+  {
+    let s = 0;
+    if (cat.t >= 0) { cat.t += dt; s = smooth(0, 0.7, cat.t) * (1 - smooth(1.9, 2.7, cat.t)); if (cat.t > 2.8) cat.t = -1; }
+    cat.g.setAttribute('transform', `translate(${cat.x} ${cat.y}) scale(${f(0.62 * (1 + 0.32 * s))} ${f(0.62 * (1 - 0.26 * s))})`);
+    cat.head.setAttribute('transform', `translate(${f(s * 3)} ${f(s * 5)})`);
+    const tw = wobble(t, 0.7) * 2 + s * 4;
+    cat.tail.setAttribute('d', `M-7 -1 Q-13 0 -14 -4 Q${f(-14 + tw)} ${f(-9 - s * 4)} ${f(-11 + tw * 1.4)} ${f(-11 - s * 6)}`);
+  }
+
+  // the sketch event
+  if (!ev.on) {
+    if (ev.cool > 0) ev.cool -= dt;
+    ev.autoAt -= dt;
+    if (ev.autoAt <= 0) { ev.autoAt = 34; startEvent(); }
+  } else ev.t += dt;
+  kemalBrain(dt);
+  drawSaadet(t, ev);
+
+  // passers-by
+  spawnIn -= dt;
+  if (spawnIn <= 0) {
+    spawnIn = 9 + RR() * 9;
+    const day = P.lamp < 0.5;
+    const kind = day && RR() < 0.45 ? 'simit' : RR() < 0.5 ? 'lady' : 'gent';
+    const dir = RR() < 0.5 ? 1 : -1;
+    spawn(kind, dir > 0 ? -30 : 590, dir, RR() < 0.5 ? 352 : 367);
+  }
+  for (const Pp of people) drawPerson(Pp, t, dt);
+  for (let i = people.length - 1; i >= 0; i--) {
+    const Pp = people[i];
+    if (Pp.passer && (Pp.x < -50 || Pp.x > 610)) { Pp.g.remove(); people.splice(i, 1); tinted = tinted.filter(([n]) => n.isConnected); }
+  }
+  [sa, ...people].sort((a, b) => a.y - b.y).forEach((o) => walkL.appendChild(o.g));
+
+  // paper flight
+  if (ev.on) {
+    const c = ev.t;
+    const handS = toScene(kemal.x, kemal.y, kemal.dir, kemal.hand[0], kemal.hand[1], SC);
+    let pos, rot, sc = 1;
+    if (c < FLY) {
+      const u = c / FLY, e = u * u * (3 - 2 * u);
+      const mid = [(bookScene[0] + handS[0]) / 2, Math.min(bookScene[1], handS[1]) - 95];
+      const a = lerpP(bookScene, mid, e), bq = lerpP(mid, handS, e);
+      pos = lerpP(a, bq, e);
+      pos[0] += Math.sin(c * 6.5) * 7 * (1 - u) * u * 2; pos[1] += Math.sin(c * 4.7) * 4 * (1 - u);
+      rot = Math.sin(c * 5.5) * 50 * (1 - u) + c * 120 * (1 - u);
+    } else {
+      const h = c - FLY;
+      pos = handS; rot = -8 * kemal.dir; sc = 1 - smooth(2.6, 3.0, h);
+      if (h > 3.0) { ev.on = false; ev.cool = 6; ev.autoAt = 34; }
+    }
+    paper.setAttribute('visibility', sc > 0.02 ? 'visible' : 'hidden');
+    paper.setAttribute('transform', `translate(${f(pos[0])} ${f(pos[1])}) rotate(${f(rot)}) scale(${f(sc * 0.9)})`);
+  } else paper.setAttribute('visibility', 'hidden');
+
+  for (let i = sayings.length - 1; i >= 0; i--) {
+    const s = sayings[i]; s.t += dt;
+    s.n.setAttribute('y', f(s.y - s.t * 8)); s.n.setAttribute('opacity', f(1 - smooth(1, 1.8, s.t)));
+    if (s.t > 1.8) { s.n.remove(); sayings.splice(i, 1); }
+  }
+  first = false;
+});
+</script>
+</body>
+</html>
