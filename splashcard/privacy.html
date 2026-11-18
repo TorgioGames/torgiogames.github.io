@@ -24,7 +24,7 @@
   <ul>
     <li>Hesap yok, satın alma yok. İlerlemen yalnızca telefonunda tutulur; oyun internetsiz de oynanır.</li>
     <li>Oyun ücretsizdir ve reklamla desteklenir. Reklamları Google AdMob sunar ve AdMob reklam için cihaz verisi kullanır.</li>
-    <li>İsimsiz oyun istatistikleri ve çökme raporları (GameAnalytics) yalnızca sen izin verirsen gönderilir.</li>
+    <li>İsimsiz oyun istatistikleri (Firebase Analytics) yalnızca sen izin verirsen gönderilir. Oyun çökerse teknik bir hata kaydı Firebase Crashlytics'e gönderilir; reklam kimliği içermez.</li>
   </ul>
 
   <h2>Cihazında saklanan bilgiler</h2>
@@ -34,8 +34,9 @@
   <p>İlk 15 sahnede reklam yoktur. Sonrasında bir sahneden diğerine geçerken, en çok üç sahnede bir ve aralarında birkaç dakika olacak şekilde tam ekran reklam gösterilebilir; hikâye notları açıkken asla gösterilmez. Ödüllü reklamlar her zaman senin seçimindir: ipucun bittiğinde ücretsiz ipucu için ya da sahne sonunda yıldızlarını ikiye katlamak için "Reklam izle" düğmesine basabilirsin (günde en çok 10 kez). Reklam içerikleri her yaşa uygun (G) olarak sınırlandırılmıştır.</p>
   <p>AdMob; reklam göstermek, ölçmek ve kötüye kullanımı önlemek için reklam kimliği, cihaz ve uygulama bilgileri, yaklaşık konum (IP adresinden) ve reklam etkileşimleri gibi verileri işleyebilir. Avrupa Ekonomik Alanı, Birleşik Krallık ve İsviçre'de oyun reklamlardan önce Google'ın onay formunu gösterir; seçimini Ayarlar › Reklam gizliliği'nden değiştirebilirsin. Ayrıntılar: <a href="https://policies.google.com/technologies/partner-sites?hl=tr">Google'ın iş ortağı sitelerinde veri kullanımı</a>.</p>
 
-  <h2>Oyun istatistikleri ve çökme raporları (GameAnalytics, isteğe bağlı)</h2>
-  <p>Oyun bir kez sorar. İzin verirsen hangi sahnelerin başladığı ve bittiği, ipucu ve yıldız kullanımı, izlenen reklamlar ve oyun çökerse hata kaydı gibi isimsiz olaylar; cihaz modeli, işletim sistemi, ülke ve rastgele bir kurulum kimliğiyle birlikte GameAnalytics'e gönderilir. Adın, e-postan, kişilerin ya da tam konumun gönderilmez. Bu verileri yalnızca oyunu geliştirmek için kullanırız. İzni istediğin zaman Ayarlar › Oyun istatistiklerini paylaş'tan kapatabilirsin. Ayrıntılar: <a href="https://gameanalytics.com/privacy/">GameAnalytics gizlilik politikası</a>.</p>
+  <h2>Oyun istatistikleri (Firebase Analytics, isteğe bağlı) ve çökme raporları (Firebase Crashlytics)</h2>
+  <p>Oyun bir kez sorar. İzin verirsen hangi sahnelerin başladığı ve bittiği, ipucu ve yıldız kullanımı gibi isimsiz olaylar; cihaz modeli, işletim sistemi, ülke ve rastgele bir kurulum kimliğiyle birlikte Google'ın Firebase Analytics hizmetine (Google LLC, ABD) gönderilir. Reklam kimliği hiç toplanmaz ve reklam kişiselleştirmesi için kullanılmaz. İzin vermezsen ya da sonradan kapatırsan hiçbir şey toplanmaz. İzni istediğin zaman Ayarlar › Oyun istatistiklerini paylaş'tan değiştirebilirsin.</p>
+  <p>Oyun çökerse teknik hata kaydı (kod satırı, cihaz modeli, işletim sistemi ve oyun sürümü) Firebase Crashlytics'e gönderilir; adın, e-postan, reklam kimliğin ya da konumun gönderilmez. Bu verileri yalnızca oyunu geliştirmek için kullanırız. Ayrıntılar: <a href="https://firebase.google.com/support/privacy">Firebase gizlilik ve güvenlik</a>.</p>
   <p>Google Play ve App Store da çökme ve performans bilgilerini kendi kurallarına göre toplayıp bize isimsiz özet olarak gösterebilir.</p>
 
   <h2>Çevrimiçi liderlik tablosu</h2>
@@ -73,7 +74,7 @@
   <ul>
     <li>No account, no purchases. Your progress stays on your phone, and the game also plays offline.</li>
     <li>The game is free and supported by ads. Ads are served by Google AdMob, which uses device data for advertising.</li>
-    <li>Anonymous play statistics and crash reports (GameAnalytics) are sent only if you agree.</li>
+    <li>Anonymous play statistics (Firebase Analytics) are sent only if you agree. Crash reports go to Firebase Crashlytics and contain no advertising ID.</li>
   </ul>
 
   <h2>Information stored on your device</h2>
@@ -83,8 +84,9 @@
   <p>There are no ads in the first 15 scenes. After that, a full-screen ad may appear when you move from one scene to the next, at most every three scenes and a few minutes apart, never over a story note. Rewarded ads are always your choice: tap "Watch ad" for a free hint when you have none left, or to double your stars at the end of a scene (up to 10 times a day). Ad content is limited to all ages (G).</p>
   <p>AdMob may process data such as your advertising ID, device and app information, approximate location (from your IP address) and ad interactions to show and measure ads and to prevent fraud. In the European Economic Area, the UK and Switzerland the game shows Google's consent form before any ads; you can change your choice in Settings › Ad privacy. Details: <a href="https://policies.google.com/technologies/partner-sites">How Google uses information from sites or apps that use its services</a>.</p>
 
-  <h2>Play statistics and crash reports (GameAnalytics, optional)</h2>
-  <p>The game asks once. If you agree, anonymous events such as which scenes start and finish, hint and star use, ads watched and an error log if the game crashes are sent to GameAnalytics together with the device model, operating system, country and a random install ID. Your name, email, contacts and precise location are never sent. We use this data only to improve the game. You can turn it off any time in Settings › Share play statistics. Details: <a href="https://gameanalytics.com/privacy/">GameAnalytics privacy policy</a>.</p>
+  <h2>Play statistics (Firebase Analytics, optional) and crash reports (Firebase Crashlytics)</h2>
+  <p>The game asks once. If you agree, anonymous events such as which scenes start and finish and hint and star use are sent to Google's Firebase Analytics (Google LLC, USA) together with the device model, operating system, country and a random install ID. The advertising ID is never collected or used for ad personalisation. If you decline, or turn it off later, nothing is collected. You can change this any time in Settings › Share play statistics.</p>
+  <p>If the game crashes, a technical error log (code line, device model, operating system and game version) is sent to Firebase Crashlytics; your name, email, advertising ID and location are never sent. We use this data only to improve the game. Details: <a href="https://firebase.google.com/support/privacy">Firebase privacy and security</a>.</p>
   <p>Google Play and the App Store may also collect crash and performance information under their own terms and show it to us as anonymous summaries.</p>
 
   <h2>Online leaderboard</h2>
